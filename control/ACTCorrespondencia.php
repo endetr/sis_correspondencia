@@ -954,6 +954,7 @@ window.onload=function(){self.print();}
         $this->objParam->defecto('dir_ordenacion', 'asc');
         $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
         $this->objParam->addFiltro("cor.sw_archivado = ''si'' ");
+        $this->objParam->addFiltro("cor.sw_finalizado = ''no'' ");
 
         if ($this->objParam->getParametro('tipoReporte') == 'excel_grid' || $this->objParam->getParametro('tipoReporte') == 'pdf_grid') {
             $this->objReporte = new Reporte($this->objParam, $this);
@@ -961,7 +962,6 @@ window.onload=function(){self.print();}
         } else {
             $this->objFunc = $this->create('MODCorrespondencia');
             $this->res = $this->objFunc->listarCorrespondenciaRecibida();
-
         }
         $this->res->imprimirRespuesta($this->res->generarJson());
 
@@ -1351,6 +1351,53 @@ window.onload=function(){self.print();}
 
         $this->objFunc = $this->create('MODCorrespondencia');
         $this->res = $this->objFunc->obtenerFuncGerencia();
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    //
+    function finalizarCorrespondencia(){
+        $this->objFunc = $this->create('MODCorrespondencia');
+        $this->res = $this->objFunc->finalizarCorrespondencia();
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    //
+    function listarCorrespondenciaFinalizada()
+    {
+        $this->objParam->defecto('ordenacion', 'id_correspondencia');
+        $this->objParam->defecto('dir_ordenacion', 'asc');
+        $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
+        $this->objParam->addFiltro("cor.sw_finalizado = ''si'' ");
+        $this->objParam->addFiltro("cor.sw_archivado = ''si'' ");
+        /*if ($this->objParam->getParametro('tipoReporte') == 'excel_grid' || $this->objParam->getParametro('tipoReporte') == 'pdf_grid') {
+            $this->objReporte = new Reporte($this->objParam, $this);
+            $this->res = $this->objReporte->generarReporteListado('MODCorrespondencia', 'listarCorrespondenciaFinalizada');
+        } else {*/
+        $this->objFunc = $this->create('MODCorrespondencia');
+        $this->res = $this->objFunc->listarCorrespondenciaFinalizada();
+        //}
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+    //
+    function listarCorrespondenciaEstado()
+    {
+        $this->objParam->defecto('ordenacion', 'id_correspondencia');
+        $this->objParam->defecto('dir_ordenacion', 'desc');
+        $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
+        /*if($this->objParam->getParametro('id_origen')!=''){
+            $id_correspondencia=$this->objParam->getParametro('id_origen');
+            $id_institucion=$this->objParam->getParametro('id_institucion');
+        }
+        var_dump($id_correspondencia);
+        $this->objParam->addParametro('id_correspondencia',$id_correspondencia);
+        $this->objParam->addParametro('estado_reporte','finalizado');
+        $this->objParam->addParametro('id_institucion',$id_institucion);*/
+
+        if ($this->objParam->getParametro('tipoReporte') == 'excel_grid' || $this->objParam->getParametro('tipoReporte') == 'pdf_grid') {
+            $this->objReporte = new Reporte($this->objParam, $this);
+            $this->res = $this->objReporte->generarReporteListado('MODCorrespondencia', 'listarCorrespondenciaEstado');
+        } else {
+            $this->objFunc = $this->create('MODCorrespondencia');
+            $this->res = $this->objFunc->listarCorrespondenciaEstado();
+        }
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 }

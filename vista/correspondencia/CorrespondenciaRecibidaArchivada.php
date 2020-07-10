@@ -69,7 +69,14 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 			disabled: false,
 			handler: this.DesArchivar,
 			tooltip: '<b>DesArchivar</b><br/>'
-		});		
+		});
+        this.addButton('Finalizar', {
+            text: 'Finalizar',
+            iconCls: 'bsave',
+            disabled: false,
+            handler: this.BFinalizar,
+            tooltip: '<b>Finalizar Proceso</b><br/>'
+        });
 		this.init();
         this.store.baseParams = {'interface': 'recibida_archivada','tipo': this.swTipo};
         this.load({params: {start: 0, limit: 50}})	     
@@ -105,12 +112,14 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
               this.getBoton('HojaRuta').show();
               this.getBoton('Historico').show();
               this.getBoton('DesArchivar').show();
+              this.getBoton('Finalizar').show();
 	    }else{
 			  this.getBoton('Adjuntos').show();
               this.getBoton('VerDocumento').show();
               this.getBoton('HojaRuta').disable();
               this.getBoton('Historico').disable();
               this.getBoton('DesArchivar').show();
+              this.getBoton('Finalizar').show();
             
 		}
 		
@@ -159,7 +168,6 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 	},
 	DesArchivar:function(){
 		var rec = this.sm.getSelected();
-
 		Ext.Ajax.request({
 			url: '../../sis_correspondencia/control/Correspondencia/archivarCorrespondencia',
 			params: {
@@ -174,6 +182,21 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 			scope: this
 		});
 	},
+    //
+    BFinalizar:function(){
+        var rec = this.sm.getSelected();
+        Ext.Ajax.request({
+            url: '../../sis_correspondencia/control/Correspondencia/finalizarCorrespondencia',
+            params: {
+                id_correspondencia: rec.data.id_correspondencia,
+                sw_finalizado :'si'
+            },
+            success: this.successFinalizar,
+            failure: this.conexionFailure,
+            timeout: this.timeout,
+            scope: this
+        });
+    },
 	east : undefined
 	
 	

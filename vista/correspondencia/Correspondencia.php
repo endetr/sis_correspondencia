@@ -65,7 +65,7 @@ header("content-type: text/javascript; charset=UTF-8");
             //4
             this.addButton('Adjuntos', {
                 text : 'Adjuntos',
-                iconCls : 'badjunto',
+                iconCls : 'bven1',
                 disabled : true,
                 handler : this.BAdjuntos,
                 tooltip : '<b>Adjuntos</b><br/>Archivos adjuntos a la correspondencia'
@@ -155,7 +155,8 @@ header("content-type: text/javascript; charset=UTF-8");
             url: '../../../sis_correspondencia/vista/correspondencia_detalle/CorrespondenciaDetalle.php',
             cls : 'CorrespondenciaDetalle',
             title : 'Detalle de Derivación',
-            height : '50%'
+            height : '50%',
+            witdh : '300'
         },
         Atributos : [
         {
@@ -280,7 +281,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'numero',
                     fieldLabel : 'Numero',
-                    gwidth : 80
+                    gwidth : 150
                 },
                 type : 'TextField',
                 filters : {
@@ -496,7 +497,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     triggerAction : 'all',
                     selectOnFocus : true,
                     forceSelection: true,
-                    disabled:true,
+                    //disabled:true,
                     mode : 'local',
                     minChars: 2,
                     //valorInicial:{ID:'interna',valor:'Interna'},
@@ -819,17 +820,21 @@ header("content-type: text/javascript; charset=UTF-8");
                         url:'../../sis_correspondencia/control/Correspondencia/obtenerUoPorFuncionario',
                         id : 'id_uo',
                         root: 'datos',
+                        sortInfo:{
+							field: 'nombre_unidad',
+							direction: 'ASC'
+						},
                         fields: ['id_uo','nombre_unidad','id_gerencia'],
                         remoteSort: true,
                     }),
                     readOnly:true,
                     valueField: 'id_uo',
                     displayField: 'nombre_unidad',
-                    gdisplayField: 'nombre_unidad',
+                    //gdisplayField: 'nombre_unidad',
                     hiddenName: 'id_uo',
                     typeAhead: false,
                     triggerAction: 'all',
-                    lazyRender:true,
+                    lazyRender:false,
                     mode:'remote',
                     pageSize:6,
                     queryDelay:1000,
@@ -1643,7 +1648,7 @@ header("content-type: text/javascript; charset=UTF-8");
             }else{
                 remitente=rec.data.desc_insti;
             }
-
+            console.log('****',remitente,rec.data);
             Phx.CP.loadWindows('../../../sis_correspondencia/vista/correspondencia/Historico.php',remitente+' -- '+rec.data.numero, {
                 width : 900,
                 height : 400
@@ -1682,7 +1687,7 @@ header("content-type: text/javascript; charset=UTF-8");
         },
         
         BArchivar:function(){
-            var rec = this.sm.getSelected();s
+            var rec = this.sm.getSelected();
             if(rec.data.fisico=='si'){
                 if(confirm('Esta seguro de Archivar el documento '+rec.data.numero+'?')){
                     var result = prompt('Especifique la ubicación física del documento y las razones por las que se archiva el Documento'+rec.data.numero);

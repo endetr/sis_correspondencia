@@ -106,7 +106,7 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 	   	},this)
 
    },
-  // east : undefined,
+   east : undefined,
    
   
 	getParametrosFiltro: function () {
@@ -190,7 +190,7 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
         var tb = Phx.vista.RecepcionCorrespondenciaExterna.superclass.liberaMenu.call(this);
         if(tb){
            
-           this.getBoton('SubirDocumento').disable();
+            this.getBoton('SubirDocumento').disable();
 			this.getBoton('Adjuntos').disable();
 			this.getBoton('VerDocumento').disable();
 			this.getBoton('Finalizar').disable();

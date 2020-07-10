@@ -580,6 +580,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 //a this.Cmp.id_funcionario.disable();
                 //this.Cmp.id_funcionario.enableMultiSelect(true);
                 Phx.vista.CorrespondenciaDetalle.superclass.onButtonEdit.call(this);
+                this.ocultarComponente(this.Cmp.tipo_filtro);
+                this.ocultarComponente(this.Cmp.id_gerencia);
                 this.ocultarComponente(this.Cmp.id_funcionario);
                 this.ocultarComponente(this.Cmp.id_grupo);
             },
@@ -587,8 +589,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 //a this.Cmp.id_funcionario.disable();
                 //this.Cmp.id_funcionario.enableMultiSelect(true);
                 Phx.vista.CorrespondenciaDetalle.superclass.onButtonNew.call(this);
-                //this.mostrarComponente(this.Cmp.id_funcionario);
-                //this.ocultarComponente(this.Cmp.id_funcionario);
+                this.mostrarComponente(this.Cmp.tipo_filtro);
+                this.mostrarComponente(this.Cmp.id_gerencia);
+                this.mostrarComponente(this.Cmp.id_grupo);
                 this.Cmp.id_funcionario.disable();
             },
             //9

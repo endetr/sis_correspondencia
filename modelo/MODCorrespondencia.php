@@ -128,6 +128,7 @@ class MODCorrespondencia extends MODbase{
 		$this->captura('tipo_documento','varchar');
 		$this->captura('persona_firma','varchar');
 		$this->captura('persona_destino','varchar'); //#4
+		$this->captura('fisico','varchar'); 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -1255,7 +1256,7 @@ class MODCorrespondencia extends MODbase{
 	function obtenerFuncGerencia(){
 		//Definicion de variables para ejecucion del procedimientp
 		$this->procedimiento='corres.ft_correspondencia_sel';
-		$this->transaccion='CO_FUNGER_SEL';
+		$this->transaccion='CO_FUNGERV_SEL';
 		$this->tipo_procedimiento='SEL';
 		//$this->setParametro('id_uo','id_uo','int4');
 		//Definicion de la lista del resultado del query
@@ -1269,5 +1270,182 @@ class MODCorrespondencia extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
+	//
+	function finalizarCorrespondencia(){
+		$this->procedimiento='corres.ft_correspondencia_ime';
+		$this->transaccion='CO_CORFIN_UPD';
+		$this->tipo_procedimiento='IME';
+		//Define los parametros para la funcion
+		$this->setParametro('id_correspondencia','id_correspondencia','int4');
+		$this->setParametro('sw_finalizado','sw_finalizado','varchar');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	//
+	function listarCorrespondenciaFinalizada(){
+		//Definicion de variables para ejecucion del procedimientp
+		$this->procedimiento='corres.ft_correspondencia_sel';
+		$this->transaccion='CO_CORFIN_SEL';
+		$this->tipo_procedimiento='SEL';//tipo de transaccion
+
+		//EAQ:envia parametro id_correspondencia padre para funcionalidad acceso directo
+		$this->setParametro('id_funcionario_usuario','id_funcionario_usuario','int4');
+		$this->setParametro('interface','interface','varchar');
+		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('id_correspondencia','id_correspondencia','int4');
+		//Definicion de la lista del resultado del query
+		$this->captura('id_origen','int4');
+		$this->captura('id_correspondencia','int4');
+		$this->captura('estado','varchar');
+		$this->captura('estado_reg','varchar');
+		$this->captura('fecha_documento','date');
+		$this->captura('fecha_fin','date');
+		$this->captura('id_correspondencia_fk','int4');
+		$this->captura('id_correspondencias_asociadas','integer[]');
+		$this->captura('id_depto','int4');
+		$this->captura('id_documento','int4');
+		$this->captura('id_funcionario','int4');
+		$this->captura('id_gestion','int4');
+		$this->captura('id_institucion','int4');
+		$this->captura('id_periodo','int4');
+		$this->captura('id_persona','int4');
+		$this->captura('id_uo','int4');
+		$this->captura('mensaje','text');
+		$this->captura('nivel','int4');
+		$this->captura('nivel_prioridad','varchar');
+		$this->captura('numero','varchar');
+		$this->captura('observaciones_estado','text');
+		$this->captura('referencia','varchar');
+		$this->captura('respuestas','varchar');
+		$this->captura('sw_responsable','varchar');
+		$this->captura('tipo','varchar');
+		$this->captura('fecha_reg','timestamp');
+		$this->captura('id_usuario_reg','int4');
+		$this->captura('fecha_mod','timestamp');
+		$this->captura('id_usuario_mod','int4');
+		$this->captura('usr_reg','varchar');
+		$this->captura('usr_mod','varchar');
+		$this->captura('desc_documento','varchar');
+		$this->captura('origen','varchar');
+		$this->captura('desc_funcionario','text');
+		$this->captura('desc_funcionario_origen','text');
+		$this->captura('acciones','text');
+		$this->captura('desc_depto','text');
+		$this->captura('desc_uo','text');
+		$this->captura('desc_gestion','integer');
+		$this->captura('desc_periodo','integer');
+		$this->captura('nombre_completo1','text');
+		$this->captura('desc_insti','varchar');
+		$this->captura('version','int4');
+		$this->captura('ruta_archivo','varchar');
+		$this->captura('sw_archivado','varchar');
+		$this->captura('adjunto','bigint');
+		//$this->captura('acciones','text');
+		$this->captura('id_acciones','text');
+		$this->captura('fecha_creacion_documento','timestamp');
+		$this->captura('fecha_ult_derivado','timestamp');
+		$this->captura('observaciones_archivado','text');
+		$this->captura('cite','varchar');
+		$this->captura('otros_adjuntos','varchar');
+		$this->captura('nro_paginas','int');
+		$this->captura('desc_correspondencias_asociadas','text');
+		$this->captura('tipo_documento','varchar');
+		$this->captura('persona_firma','varchar');
+		$this->captura('estado_fisico','varchar');
+		$this->captura('persona_remitente','varchar');
+		$this->captura('fisico','varchar');
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	//
+	function listarCorrespondenciaEstado(){
+        //Definicion de variables para ejecucion del procedimientp
+        $this->procedimiento='corres.ft_correspondencia_sel';
+        $this->transaccion='CO_COREST_SEL';
+        $this->tipo_procedimiento='SEL';//tipo de transaccion
+
+        //EAQ:envia parametro id_correspondencia padre para funcionalidad acceso directo
+        $this->setParametro('id_funcionario_usuario','id_funcionario_usuario','int4');
+        $this->setParametro('interface','interface','varchar');
+        $this->setParametro('tipo','tipo','varchar');
+        $this->setParametro('id_correspondencia','id_correspondencia','int4');
+        //Definicion de la lista del resultado del query
+        $this->captura('id_origen','int4');
+        $this->captura('id_correspondencia','int4');
+        $this->captura('estado','varchar');
+        $this->captura('estado_reg','varchar');
+        $this->captura('fecha_documento','date');
+        $this->captura('fecha_fin','date');
+        $this->captura('id_correspondencia_fk','int4');
+        $this->captura('id_correspondencias_asociadas','integer[]');
+        $this->captura('id_depto','int4');
+        $this->captura('id_documento','int4');
+        $this->captura('id_funcionario','int4');
+        $this->captura('id_gestion','int4');
+        $this->captura('id_institucion','int4');
+        $this->captura('id_periodo','int4');
+        $this->captura('id_persona','int4');
+        $this->captura('id_uo','int4');
+        $this->captura('mensaje','text');
+        $this->captura('nivel','int4');
+        $this->captura('nivel_prioridad','varchar');
+        $this->captura('numero','varchar');
+        $this->captura('observaciones_estado','text');
+        $this->captura('referencia','varchar');
+        $this->captura('respuestas','varchar');
+        $this->captura('sw_responsable','varchar');
+        $this->captura('tipo','varchar');
+        $this->captura('fecha_reg','timestamp');
+        $this->captura('id_usuario_reg','int4');
+        $this->captura('fecha_mod','timestamp');
+        $this->captura('id_usuario_mod','int4');
+        $this->captura('usr_reg','varchar');
+        $this->captura('usr_mod','varchar');
+        $this->captura('desc_documento','varchar');
+        $this->captura('origen','varchar');
+        //$this->captura('desc_funcionario','text');
+        $this->captura('desc_funcionario_origen','text');
+        $this->captura('acciones','text');
+        $this->captura('desc_depto','text');
+        $this->captura('desc_uo','text');
+        $this->captura('desc_gestion','integer');
+        $this->captura('desc_periodo','integer');
+        $this->captura('nombre_completo1','text');
+        $this->captura('desc_insti','varchar');
+        $this->captura('version','int4');
+        $this->captura('ruta_archivo','varchar');
+        $this->captura('sw_archivado','varchar');
+        $this->captura('adjunto','bigint');
+        //$this->captura('acciones','text');
+        $this->captura('id_acciones','text');
+        $this->captura('fecha_creacion_documento','timestamp');
+        $this->captura('fecha_ult_derivado','timestamp');
+        $this->captura('observaciones_archivado','text');
+        $this->captura('cite','varchar');
+        $this->captura('otros_adjuntos','varchar');
+        $this->captura('nro_paginas','int');
+       // $this->captura('desc_correspondencias_asociadas','text');
+        $this->captura('tipo_documento','varchar');
+        $this->captura('persona_firma','varchar');
+        $this->captura('estado_fisico','varchar');
+        $this->captura('persona_remitente','varchar');
+        $this->captura('fisico','varchar');
+
+        //Ejecuta la instruccion
+        $this->armarConsulta();
+        $this->ejecutarConsulta();
+
+        //Devuelve la respuesta
+        return $this->respuesta;
+    }
 }
 ?>

@@ -36,7 +36,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.Atributos[this.getIndAtributo('asociar')].grid=false;
             this.Atributos[this.getIndAtributo('observaciones_archivado')].grid=false;
             this.Atributos[this.getIndAtributo('id_acciones')].grid=false;
-            //this.Atributos[this.getIndAtributo('persona_firma')].grid=false;
+            this.Atributos[this.getIndAtributo('fisico')].grid=false;
             //this.Atributos[this.getIndAtributo('tipo_documento')].grid=false;
             Phx.vista.CorrespondenciaSaliente.superclass.constructor.call(this, config);
             this.getBoton('FinalizarExterna').hide();
@@ -99,8 +99,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 this.Cmp.id_uo.store.load({params:{start:0,limit:this.tam_pag},
                     callback : function (r) {
                         if (r.length == 1) {
-                            //this.Cmp.id_uo.setValue(r[0].data.id_uo);
                             this.Cmp.id_uo.setValue(r[0].data.id_gerencia);
+                            this.Cmp.id_uo.setValue(r[0].data.id_uo);
                         }
                     }, scope : this
                 });
