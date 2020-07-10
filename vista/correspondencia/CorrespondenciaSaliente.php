@@ -204,7 +204,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 }
             }
             return tb
-
         }
 
     };

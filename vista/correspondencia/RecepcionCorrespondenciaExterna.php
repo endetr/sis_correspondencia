@@ -235,8 +235,7 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
                 this.Cmp.id_depto.setValue(r[0].data.id_depto);
             }, scope : this
 
-        });
-        
+        });        
 	},
 	
 	onButtonEdit: function () {
@@ -262,7 +261,6 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 		this.tipo.disable(true);
   	    this.ocultarComponente(this.Cmp.id_funcionario);
 	}
-
 	
 };
 </script>

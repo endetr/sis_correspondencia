@@ -624,6 +624,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 }
                 this.reload();
             },
+            
             definirFormularioVentana: function() {
                 var me = this;
                 //define la altura en porcentaje al repecto de body

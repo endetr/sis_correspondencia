@@ -1342,7 +1342,6 @@ window.onload=function(){self.print();}
         $this->res = $this->objFunc->obtenerUoPorFuncionario();
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
-    //
     //#8
     function obtenerFuncGerencia()
     {
@@ -1386,11 +1385,9 @@ window.onload=function(){self.print();}
             $id_correspondencia=$this->objParam->getParametro('id_origen');
             $id_institucion=$this->objParam->getParametro('id_institucion');
         }
-        var_dump($id_correspondencia);
         $this->objParam->addParametro('id_correspondencia',$id_correspondencia);
         $this->objParam->addParametro('estado_reporte','finalizado');
         $this->objParam->addParametro('id_institucion',$id_institucion);*/
-
         if ($this->objParam->getParametro('tipoReporte') == 'excel_grid' || $this->objParam->getParametro('tipoReporte') == 'pdf_grid') {
             $this->objReporte = new Reporte($this->objParam, $this);
             $this->res = $this->objReporte->generarReporteListado('MODCorrespondencia', 'listarCorrespondenciaEstado');

@@ -1636,7 +1636,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 scope : this
             });
         },
-
         /* 11 histórico.
          * hoja pop up para la hoja de ruta
          */

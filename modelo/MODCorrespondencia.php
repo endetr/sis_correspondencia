@@ -1366,7 +1366,7 @@ class MODCorrespondencia extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-	//
+	////
 	function listarCorrespondenciaEstado(){
         //Definicion de variables para ejecucion del procedimientp
         $this->procedimiento='corres.ft_correspondencia_sel';
@@ -1439,11 +1439,9 @@ class MODCorrespondencia extends MODbase{
         $this->captura('estado_fisico','varchar');
         $this->captura('persona_remitente','varchar');
         $this->captura('fisico','varchar');
-
         //Ejecuta la instruccion
         $this->armarConsulta();
         $this->ejecutarConsulta();
-
         //Devuelve la respuesta
         return $this->respuesta;
     }

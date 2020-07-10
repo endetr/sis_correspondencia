@@ -112,7 +112,7 @@ class MODDocumentoFisico extends MODbase{
 		//Devuelve la respuesta
 		return $this->respuesta;
 	}
-
+	//
 	function cambiarEstado(){
 		//Definicion de variables para ejecucion del procedimiento
 		$this->procedimiento='corres.ft_documento_fisico_ime';
@@ -129,7 +129,6 @@ class MODDocumentoFisico extends MODbase{
 
 		//Devuelve la respuesta
 		return $this->respuesta;
-	}
-			
+	}			
 }
 ?>
