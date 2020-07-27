@@ -62,7 +62,8 @@ Phx.vista.CorrespondenciaRecibida = {
 		this.getBoton('ImpCodigo').hide();
 		this.getBoton('ImpCodigoDoc').hide();
 		this.getBoton('Finalizar').hide(); 
-		this.getBoton('Habilitar').hide();			
+		this.getBoton('Habilitar').hide();
+		this.getBoton('Adicionar').hide();			
 		this.init();
 	    this.store.baseParams = {'interface': 'recibida','tipo': this.tipo}; 	 
         if(config.filtro_directo){        
@@ -79,7 +80,8 @@ Phx.vista.CorrespondenciaRecibida = {
 	preparaMenu:function(n){		    
 		var data = this.getSelectedData();
 		var tb =this.tbar;
-		//si el archivo esta escaneado se permite visualizar		
+		//si el archivo esta escaneado se permite visualizar
+		this.getBoton('Adicionar').hide();		
 		if(data['estado']=='pendiente_recibido'){
 			 this.getBoton('FinalizarExterna').enable();
             this.getBoton('Adjuntos').disable();

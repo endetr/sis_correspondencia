@@ -105,7 +105,8 @@ Phx.vista.DerivacionCorrespondenciaExterna = {
         this.getBoton('Habilitar').hide();
         this.getBoton('ImpBorrador').enable();
         this.getBoton('ImpCodigo').hide();
-	
+		this.getBoton('Adicionar').hide();
+
 		if(name=='enviado'){
 			this.getBoton('HojaRuta').show();
 			this.getBoton('Historico').show();
@@ -152,6 +153,7 @@ Phx.vista.DerivacionCorrespondenciaExterna = {
 		this.getBoton('VerDocumento').enable();
 		this.getBoton('Derivar').enable();
 		this.getBoton('SubirDocumento').enable();
+		this.getBoton('Adicionar').hide();
 		//habilitacion CITE
 		this.getBoton('ImpCodigo').enable();
 		if (data['estado'] =='enviado'){	

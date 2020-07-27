@@ -39,6 +39,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.Atributos[this.getIndAtributo('fisico')].grid=false;
             //this.Atributos[this.getIndAtributo('tipo_documento')].grid=false;
             Phx.vista.CorrespondenciaSaliente.superclass.constructor.call(this, config);
+            this.getBoton('Adicionar').hide();
             this.getBoton('FinalizarExterna').hide();
             this.getBoton('ImpCodigo').hide();
             this.getBoton('ImpCodigoDoc').hide();
@@ -167,6 +168,7 @@ header("content-type: text/javascript; charset=UTF-8");
             var data = this.getSelectedData();
             var tb = this.tbar;
             //si el archivo esta escaneado se permite visualizar
+            this.getBoton('Adicionar').hide();
             if (data['version'] > 0) {
                 this.getBoton('VerDocumento').enable();
                 this.getBoton('Finalizar').enable();
