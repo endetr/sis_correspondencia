@@ -21,19 +21,27 @@ header("content-type: text/javascript; charset=UTF-8");
 <script>
     Phx.vista.Correspondencia = Ext.extend(Phx.gridInterfaz, {
         bsave : false,
-        fwidth : '10%',
-        fheight : '90%',
-        urlDepto : '../../sis_parametros/control/Depto/listarDeptoFiltradoXUsuario',
-
+        fwidth : '40%',
+        fheight : '85%',
+        bexcel: false,
+        urlDepto : '../../sis_parametros/control/Depto/listarDeptoFiltradoXUsuario',               
+        //
         constructor : function(config) {
             this.maestro = config.maestro;
             //llama al constructor de la clase padre
             Phx.vista.Correspondencia.superclass.constructor.call(this, config);
             //Botones.
+            this.addButton('Adicionar', {
+                text: 'Agregar',
+                iconCls: 'bnew',
+                disabled: true,
+                handler: this.BAdicionar,
+                tooltip: '<b>Adicionar correspondencia</b>'
+            });
             //7
             this.addButton('ImpCodigo', {
-                text: 'Imprimir Cite',
-                iconCls: 'bprint',
+                text: 'Imprimir Recepcionado',
+                iconCls: 'bprintcheck',
                 disabled: true,
                 handler: this.BImpCodigo,
                 tooltip: '<b>Imprimir Codigo</b><br/>imprimir codigo correspondencia'
@@ -48,7 +56,7 @@ header("content-type: text/javascript; charset=UTF-8");
             });
             //2
             this.addButton('FinalizarExterna', {
-                text: 'Finalizar Recepcion',
+                text: 'Recepcionar',
                 iconCls: 'bgood',
                 disabled: true,
                 handler: this.BFinalizarExterna,
@@ -65,7 +73,7 @@ header("content-type: text/javascript; charset=UTF-8");
             //4
             this.addButton('Adjuntos', {
                 text : 'Adjuntos',
-                iconCls : 'bven1',
+                iconCls : 'bdocuments',
                 disabled : true,
                 handler : this.BAdjuntos,
                 tooltip : '<b>Adjuntos</b><br/>Archivos adjuntos a la correspondencia'
@@ -147,7 +155,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 handler : this.BCorregir,
                 tooltip : '<b>Corregir</b><br/>Si todos los envios de destinatarios se encuentran pendientes de lectura puede solicitar la corrección'
             });
-            
             this.iniciarEventos();
         },
 
@@ -155,8 +162,8 @@ header("content-type: text/javascript; charset=UTF-8");
             url: '../../../sis_correspondencia/vista/correspondencia_detalle/CorrespondenciaDetalle.php',
             cls : 'CorrespondenciaDetalle',
             title : 'Detalle de Derivación',
-            height : '50%',
-            witdh : '300'
+            height : '60%',
+            width: '30%',
         },
         Atributos : [
         {
@@ -211,7 +218,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     pfiltro : 'cor.nivel_prioridad',
                     type : 'string'
                 },
-                grid : true,
+                grid : false,
                 form : false
             },
             {
@@ -237,7 +244,6 @@ header("content-type: text/javascript; charset=UTF-8");
                                 break;
                             case 'anulado': estado='Anulado';
                                 break;
-
                         };
                         if (record.data.estado == 'borrador_recepcion_externo' || record.data.estado=='borrador_envio') {
                             if (record.data.version>0) {
@@ -264,7 +270,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'adjunto',
                     fieldLabel : 'Adjunto',
-                    gwidth : 40,
+                    gwidth : 60,
                     renderer : function(value, p, record) {
                         var icono = record.data.estado + '.png';
                         if (record.data.adjunto > 0) {
@@ -297,10 +303,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'fisico',
                     fieldLabel : '¿Tiene el Fisico?',
-                    gwidth : 80,
+                    gwidth : 85,
                     renderer:function (value, p, record){
                         if(record.data['fisico']=='si')
-                            return String.format('<b><font size="5" color="red">{0}</font></b>', record.data['fisico']);
+                            return String.format('<b><font size="5" color="#00DB03">{0}</font></b>', record.data['fisico']);
                         else
                             return String.format('{0}', record.data['fisico']);
                     }
@@ -321,18 +327,16 @@ header("content-type: text/javascript; charset=UTF-8");
                     fieldLabel : 'Cite',
                     allowBlank : false, //#6
                     gwidth : 80,
-                    width : 300
+                    width : 280,                    
                 },
                 type : 'TextField',
                 filters : {
                     pfiltro : 'cor.cite',
                     type : 'string'
                 },
-
                 id_grupo : 1,
-
                 grid : true,
-                form : true,
+                form : true,               
                 bottom_filter : true
             },
             {
@@ -340,16 +344,15 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'id_institucion_remitente',
                     allowBlank : false, //#6
                     fieldLabel : 'Institucion Remitente',
-                    valueField : 'id_institucion',
-                    //anchor : '90%',
+                    valueField : 'id_institucion',                    
                     tinit : true,
                     origen : 'INSTITUCION',
                     gdisplayField : 'desc_insti',
-                    width : 200,
+                    width : 280,
                     gwidth : 200,
                     renderer : function(value, p, record) {
                         return String.format('{0}', record.data['desc_insti']);
-                    }
+                    },                    
                 },
                 type : 'ComboRec',
                 id_grupo : 1,
@@ -365,16 +368,14 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'persona_remitente',
                     fieldLabel : 'Persona Remitente',
                     gwidth : 100,
-                    width : 300
+                    width : 280
                 },
                 type : 'TextField',
                 filters : {
                     pfiltro : 'cor.persona_remitente',
                     type : 'string'
                 },
-
                 id_grupo : 1,
-
                 grid : true,
                 form : true,
                 bottom_filter : true
@@ -388,7 +389,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     gdisplayField : 'nombre_completo1', //mapea al store del grid
                     valueField : 'id_persona',
                     gwidth : 200,
-                    width : 300,
+                    width : 280,
                     renderer : function(value, p, record) {
                         return String.format('{0}', record.data['nombre_completo1']);
                     }
@@ -396,11 +397,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 type : 'ComboRec',
                 id_grupo : 1,
                 filters : {
-                    //pfiltro : 'persona.nombre_completo1',
                     pfiltro : 'persona.nombre_completo1',
                     type : 'string'
                 },
-
                 grid : false,
                 form : true,
                 bottom_filter : true
@@ -410,8 +409,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'referencia',
                     fieldLabel : 'Referencia',
                     allowBlank : true,
-                    width : 200,
-                    growMin : 100,
+                    width : 280,
+                    growMin : 50,
                     grow : true,
                     gwidth : 200,
                     maxLength : 500,
@@ -433,8 +432,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'otros_adjuntos',
                     fieldLabel : 'Descripción de Adjuntos',
-                    width : 200,
-                    growMin : 100,
+                    width : 280,
+                    growMin : 50,
                     grow : true,
                     gwidth : 200,
                     renderer : function(value, p, record) {
@@ -454,7 +453,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'nro_paginas',
                     fieldLabel : 'Numero Paginas',
-                    width : 200,
+                    width : 280,
                     gwidth : 100
                 },
                 type : 'TextField',
@@ -471,8 +470,8 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'mensaje',
                     fieldLabel : 'Observaciones',
                     allowBlank : true,
-                    width : 200,
-                    growMin : 100,
+                    width : 280,
+                    growMin : 50,
                     grow : true,
                     gwidth : 100,
                     renderer : function(value, p, record) {
@@ -519,9 +518,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     },
                     valueField : 'ID',
                     displayField : 'valor',
-                    width : 300,
-
-
+                    width : 280,
                 },
                 type : 'ComboBox',
                 valorInicial : '2media',
@@ -541,7 +538,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     fieldLabel : 'Clasificación',
                     allowBlank : false,
                     gdisplayField : 'desc_clasificador', //mapea al store del grid
-                    width : 200,
+                    width : 280,
                     gwidth : 200,
                     renderer : function(value, p, record) {
                         return String.format('{0}', record.data['desc_clasificador']);
@@ -566,7 +563,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     triggerAction : 'all',
                     emptyText : 'Seleccione Opcion...',
                     selectOnFocus : true,
-                    width : 200,
+                    width : 280,
                     mode : 'local',
                     //disabled: true,
                     store : new Ext.data.ArrayStore({
@@ -595,13 +592,13 @@ header("content-type: text/javascript; charset=UTF-8");
                     origen : 'DEPTO',
                     allowBlank : false, //#6
                     fieldLabel : 'Depto Corres.', //#6
-                    gdisplayField : 'desc_depto', //dibuja el campo extra de la consulta al hacer un inner join con orra tabla
-                    width : 200,
+                    gdisplayField : 'desc_depto',
+                    width : 280,
                     gwidth : 180,
                     baseParams : {
                         estado : 'activo',
                         codigo_subsistema : 'CORRES'
-                    }, //parametros adicionales que se le pasan al store
+                    }, 
                     renderer : function(value, p, record) {
                         return String.format('{0}', record.data['desc_depto']);
                     }
@@ -631,8 +628,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             direction : 'ASC'
                         },
                         totalProperty : 'total',
-                        fields : ['id_documento', 'codigo', 'descripcion'],
-                        // turn on remote sorting
+                        fields : ['id_documento', 'codigo', 'descripcion'],                        
                         remoteSort : true,
                         baseParams : {
                             par_filtro : 'DOCUME.codigo#DOCUME.descripcion'
@@ -640,7 +636,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     }),
                     valueField : 'id_documento',
                     displayField : 'descripcion',
-                    gdisplayField : 'desc_documento', //mapea al store del grid
+                    gdisplayField : 'desc_documento',
                     tpl : '<tpl for="."><div class="x-combo-list-item"><p>({codigo}) {descripcion}</p> </div></tpl>',
                     hiddenName : 'id_documento',
                     forceSelection : true,
@@ -650,7 +646,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode : 'remote',
                     pageSize : 10,
                     queryDelay : 1000,
-                    width : 200,
+                    width : 280,
                     gwidth : 150,
                     minChars : 2,
                     renderer : function(value, p, record) {
@@ -723,9 +719,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'fecha_creacion_documento',
                     fieldLabel : 'Fecha Recepción',
                     allowBlank : true,
-                    //anchor:'80%',
-                    //format : 'd-m-Y',
-                    width : 200,
+                    width : 280,
                     gwidth : 100,
                     renderer : function(value, p, record) {
                         return value ? value.dateFormat('d/m/Y H:i:s'):''
@@ -763,9 +757,9 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'id_funcionario',
                     origen : 'FUNCIONARIOCAR',
                     fieldLabel : 'Funcionario Remitente',
-                    gdisplayField : 'desc_funcionario', //mapea al store del grid
+                    gdisplayField : 'desc_funcionario',
                     valueField : 'id_funcionario',
-                    width : 200,
+                    width : 280,
                     gwidth : 200,
                     baseParams : {
                         es_combo_solicitud : 'si'
@@ -790,9 +784,9 @@ header("content-type: text/javascript; charset=UTF-8");
                     origen : 'FUNCIONARIOCAR',
                     fieldLabel : 'Funcionario Remitente Saliente',
                     allowBlank: false,
-                    gdisplayField : 'desc_funcionario', //mapea al store del grid
+                    gdisplayField : 'desc_funcionario',
                     valueField : 'id_funcionario',
-                    width : 200,
+                    width : 280,
                     gwidth : 200,
                     baseParams : {
                         es_combo_solicitud : 'si'
@@ -855,7 +849,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     disabled : false,
                     allowBlank : false,
                     format : 'd/m/Y',
-                    width : 200,
+                    width : 280,
                     gwidth : 80,
                     renderer : function(value, p, record) {
                         return value ? value.dateFormat('d/m/Y') : ''
@@ -868,7 +862,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     type : 'date'
                 },
                 id_grupo : 4,
-
                 grid : false,
                 form : true,
                 bottom_filter : true
@@ -884,7 +877,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     origen : 'INSTITUCION',
                     gdisplayField : 'desc_insti',
                     gwidth : 200,
-                    width : 200,
+                    width : 280,
                     renderer : function(value, p, record) {
                         return String.format('{0}', record.data['desc_insti']);
                     }
@@ -898,7 +891,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 grid : true,
                 form : true
             },
-
             {
                 config : {
                     name : 'id_persona_destino',
@@ -919,7 +911,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     pfiltro : 'persona.nombre_completo1',
                     type : 'string'
                 },
-
                 grid : false,
                 form : true,
                 bottom_filter : true
@@ -929,16 +920,14 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'persona_destino',
                     fieldLabel : 'Persona Destino',
                     gwidth : 100,
-                    width : 200
+                    width : 280
                 },
                 type : 'TextField',
                 filters : {
                     pfiltro : 'cor.persona_destino',
                     type : 'string'
                 },
-
                 id_grupo : 3,
-
                 grid : true,
                 form : true,
                 bottom_filter : true
@@ -976,7 +965,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode : 'remote',
                     pageSize : 10,
                     queryDelay : 1000,
-                    width : 200,
+                    width : 280,
                     minChars : 2,
                     enableMultiSelect : true
                 },
@@ -985,7 +974,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 grid : true,
                 form : true
             },
-
             {
                 config: {
                     name: 'asociar',
@@ -1028,7 +1016,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     valueField : 'id_origen',
                     displayField : 'desc_correspondencias_asociadas',
                     gdisplayField : 'desc_correspondencias_asociadas', //mapea al store del grid
-
                     hiddenName : 'id_correspondencias_asociadas',
                     forceSelection : true,
                     typeAhead : true,
@@ -1038,7 +1025,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode : 'remote',
                     pageSize : 10,
                     queryDelay : 1000,
-                    width : 200,
+                    width : 280,
                     gwidth : 200,
                     minChars : 5,
                     disabled: true,
@@ -1048,15 +1035,9 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 type : 'AwesomeCombo',
                 id_grupo : 2,
-                /*filters:{
-                 pfiltro:'acco.desc_asociadas',
-                 type:'string'
-                 },*/
-
                 grid : true,
                 form : true
             },
-
             {
                 config : {
                     name : 'id_acciones',
@@ -1072,8 +1053,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             direction : 'ASC'
                         },
                         totalProperty : 'total',
-                        fields : ['id_accion', 'nombre'],
-                        // turn on remote sorting
+                        fields : ['id_accion', 'nombre'],                        
                         remoteSort : true,
                         baseParams : {
                             par_filtro : 'acco.nombre'
@@ -1081,8 +1061,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     }),
                     valueField : 'id_accion',
                     displayField : 'nombre',
-                    gdisplayField : 'acciones', //mapea al store del grid
-
+                    gdisplayField : 'acciones',
                     hiddenName : 'id_acciones',
                     forceSelection : true,
                     typeAhead : true,
@@ -1091,7 +1070,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     mode : 'remote',
                     pageSize : 20,
                     queryDelay : 1000,
-                    width : 200,
+                    width : 280,
                     gwidth : 200,
                     minChars : 2,
                     enableMultiSelect : true,
@@ -1175,7 +1154,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     name : 'usr_mod',
                     fieldLabel : 'Modificado por',
                     allowBlank : true,
-
                     gwidth : 100,
                     maxLength : 4
                 },
@@ -1218,7 +1196,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     fieldLabel : 'Fecha Derivado',
                     allowBlank : true,
                     anchor:'80%',
-                    //format : 'd-m-Y',
                     gwidth : 100,
                     renderer : function(value, p, record) {
                         return value ? value.dateFormat('d/m/Y H:i:s'):''
@@ -1226,7 +1203,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 },
                 type : 'DateField',
                 gwidth : 100,
-                //valorInicial : new Date(),
                 filters : {
                     pfiltro : 'cor.fecha_ult_derivado',
                     type : 'date'
@@ -1239,8 +1215,8 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'observaciones_archivado',
                     fieldLabel : 'Observaciones de Archivado',
-                    width : 200,
-                    growMin : 100,
+                    width : 280,
+                    growMin : 50,
                     grow : true,
                     gwidth : 400
                 },
@@ -1260,9 +1236,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 config : {
                     name : 'persona_firma',
                     fieldLabel : 'Persona que Firma Carta',
-                    width : 200,
-                    //growMin : 100,
-                    //grow : true,
+                    width : 280,
                     gwidth : 400
                 },
                 type : 'TextField',
@@ -1284,7 +1258,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     disabled : false,
                     allowBlank : false,
                     format : 'd/m/Y',
-                    width : 200,
+                    width : 280,
                     gwidth : 80,
                     renderer : function(value, p, record) {
                         return value ? value.dateFormat('d/m/Y') : ''
@@ -1297,7 +1271,6 @@ header("content-type: text/javascript; charset=UTF-8");
                     type : 'date'
                 },
                 id_grupo : 0,
-
                 grid : true,
                 form : true,
                 bottom_filter : true
@@ -1405,6 +1378,15 @@ header("content-type: text/javascript; charset=UTF-8");
             field : 'id_correspondencia',
             direction : 'desc'
         },
+        //
+        west: {
+            url: '../../../sis_correspondencia/vista/correspondencia/Filtro.php',		
+            width: '30%',
+            collapsed: true,
+            collapsible: true,
+            cls: 'Filtro'
+        },
+        //
         Grupos : [{
             layout : 'column',
             border : false,
@@ -1417,7 +1399,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 defaults : {
                     border : false
                 },
-                width : 600,
+                width : 420,
                 items : [{
                     bodyStyle : 'padding-left:5px;padding-left:5px;',
                     items : [{
@@ -1473,7 +1455,7 @@ header("content-type: text/javascript; charset=UTF-8");
         }],
 
         loadValoresIniciales : function() {
-            Phx.vista.Correspondencia.superclass.loadValoresIniciales.call(this);
+            Phx.vista.Correspondencia.superclass.loadValoresIniciales.call(this);            
         },
         //0
         Bfactura: function(){
@@ -1602,7 +1584,13 @@ header("content-type: text/javascript; charset=UTF-8");
             var rec = this.sm.getSelected();
             var id_correspondencia = this.sm.getSelected().data.id_correspondencia;
             if (confirm('¿Esta seguro de DERIVAR el documento '+rec.data.numero + '?, no podrá modificar información al respecto.')){
-                Phx.CP.loadingShow();
+                Phx.CP.loadWindows('../../../sis_correspondencia/vista/correspondencia/Proveido.php', 'Proveido', {
+                    width : 400,
+				    height : 150
+                }, 
+                rec.data, 
+                this.idContenedor, 'Proveido')
+                /*Phx.CP.loadingShow();
                 Ext.Ajax.request({
                     url : '../../sis_correspondencia/control/Correspondencia/derivarCorrespondencia',
                     params : {
@@ -1613,7 +1601,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     failure : this.conexionFailure,
                     timeout : this.timeout,
                     scope : this
-                });
+                });*/
             }
         },
         //10
@@ -1646,8 +1634,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 remitente=rec.data.nombre_completo1;
             }else{
                 remitente=rec.data.desc_insti;
-            }
-            console.log('****',remitente,rec.data);
+            }            
             Phx.CP.loadWindows('../../../sis_correspondencia/vista/correspondencia/Historico.php',remitente+' -- '+rec.data.numero, {
                 width : 900,
                 height : 400
@@ -1690,13 +1677,15 @@ header("content-type: text/javascript; charset=UTF-8");
             if(rec.data.fisico=='si'){
                 if(confirm('Esta seguro de Archivar el documento '+rec.data.numero+'?')){
                     var result = prompt('Especifique la ubicación física del documento y las razones por las que se archiva el Documento'+rec.data.numero);
+                    var proveido = prompt('Especifique la resoluciion del Documento'+rec.data.numero);
                     if (result != null){
                         Ext.Ajax.request({
                             url: '../../sis_correspondencia/control/Correspondencia/archivarCorrespondencia',
                             params: {
                                 id_correspondencia: rec.data.id_correspondencia,
                                 sw_archivado :'si',
-                                observaciones_archivado:result
+                                observaciones_archivado:result,
+                                proveido:proveido
                             },
                             success: this.successFinalizar,
                             failure: this.conexionFailure,
@@ -1790,7 +1779,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 timeout : this.timeout,
                 scope : this
             });
-        }
-
+        },
+        //manu
+        onReloadPage:function(){
+        }  
+        
     })
 </script>

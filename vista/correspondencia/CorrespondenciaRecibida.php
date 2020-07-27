@@ -129,7 +129,32 @@ Phx.vista.CorrespondenciaRecibida = {
 			scope: this
 		});
 	},
+	//
+	onReloadPage : function(m){    			
+		this.maestro = m;
+		console.log('=22222>',this);
+		this.store.baseParams = { 
+			id_gestion:  this.maestro.id_gestion,
+			desde:  this.maestro.desde,
+			hasta:  this.maestro.hasta,
+			//cite:  this.maestro.cite,
+			numero:  this.maestro.numero,
+			observacion:  this.maestro.observacion,
+			referencia:  this.maestro.referencia,
+			//id_institucion:this.maestro.id_institucion_destino,
+			//desc_insti:this.maestro.desc_insti,
 
+			interface: 'recibida',
+			start:0,
+			limit:50,
+			sort:'id_correspondencia',
+			dir:'DESC',
+			tipo:this.tipo,
+			estado:this.swEstado,
+			contenedor: this.idContenedor
+		};
+		this.store.reload({ params: this.store.baseParams});
+	},
 
 };
 </script>

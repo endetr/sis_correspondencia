@@ -168,6 +168,22 @@ Phx.vista.Historico=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config : {
+				name : 'proveido',
+				fieldLabel : 'Proveido',
+				gwidth : 120
+			},
+			type : 'TextField',
+			filters : {
+				pfiltro : 'proveido',
+				type : 'string'
+			},
+			id_grupo : 0,
+			grid : true,
+			form : false,
+			bottom_filter : true
+		},		
+		{
+			config : {
 				name : 'fecha_recepcion',
 				fieldLabel : 'Fecha Recepcion.',
 				allowBlank : true,
@@ -183,7 +199,7 @@ Phx.vista.Historico=Ext.extend(Phx.gridInterfaz,{
 				type : 'date'
 			},
 			id_grupo : 0,
-			grid : true,
+			grid : false,
 			form : false
 		},
 		{
@@ -257,7 +273,9 @@ Phx.vista.Historico=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_documento', type: 'date',dateFormat:'Y-m-d'},
 		{name:'fecha_deriv', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'fecha_recepcion', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
-        {name:'fisico', type: 'string'}/*,
+		{name:'fisico', type: 'string'},
+		{name:'proveido', type: 'string'},
+		/*,
 
 		{name:'fecha_recepcion', type: 'string'},*/
 		

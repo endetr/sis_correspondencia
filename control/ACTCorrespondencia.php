@@ -139,7 +139,7 @@ class ACTCorrespondencia extends ACTbase
     }
 
     function insertarCorrespondencia()
-    {
+    {        
         $this->objFunc = $this->create('MODCorrespondencia');
         if ($this->objParam->insertar('id_correspondencia')) {
             $this->res = $this->objFunc->insertarCorrespondencia();
@@ -166,6 +166,14 @@ class ACTCorrespondencia extends ACTbase
         } else {
             $this->res = $this->objFunc->modificarCorrespondenciaDetalle($this->objParam);
         }
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
+    function modificarCorrespondenciaDetalles()
+    {      
+        $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
+        $this->objFunc = $this->create('MODCorrespondencia');
+        $this->res = $this->objFunc->modificarCorrespondenciaDetalles($this->objParam);    
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
 
@@ -224,17 +232,42 @@ class ACTCorrespondencia extends ACTbase
     }
     function listarCorrespondenciaRecibida()
     {
+        if($this->objParam->getParametro('id_gestion')!=''){
+            $this->objParam->addFiltro("cor.id_gestion = " . $this->objParam->getParametro('id_gestion'));
+        }
+        if($this->objParam->getParametro('desde')!='' && $this->objParam->getParametro('hasta')!=''){
+            $this->objParam->addFiltro("(cor.fecha_documento::date  BETWEEN ''%".$this->objParam->getParametro('desde')."%''::date  and ''%".$this->objParam->getParametro('hasta')."%''::date)");
+        }
+        if($this->objParam->getParametro('desde')!='' && $this->objParam->getParametro('hasta')==''){
+            $this->objParam->addFiltro("(cor.fecha_documento::date  >= ''%".$this->objParam->getParametro('desde')."%''::date)");
+        }
+        if($this->objParam->getParametro('desde')=='' && $this->objParam->getParametro('hasta')!=''){
+            $this->objParam->addFiltro("(cor.fecha_documento::date  <= ''%".$this->objParam->getParametro('hasta')."%''::date)");
+        }
+        if($this->objParam->getParametro('cite')!=''){
+            $this->objParam->addFiltro("coror.cite ilike ''%".$this->objParam->getParametro('cite')."%''");
+        }
+        if($this->objParam->getParametro('numero')!=''){
+            $this->objParam->addFiltro("cor.numero ilike ''%".$this->objParam->getParametro('numero')."%''");
+        }
+        if($this->objParam->getParametro('observacion')!=''){
+            $this->objParam->addFiltro("cor.observacion ilike ''%".$this->objParam->getParametro('observacion')."%''");
+        }
+        if($this->objParam->getParametro('referencia')!=''){
+            $this->objParam->addFiltro("cor.referencia ilike ''%".$this->objParam->getParametro('referencia')."%''");
+        }
+       // if($this->objParam->getParametro('desc_insti')!=''){
+            //$this->objParam->addFiltro("cor.id_institucion = " . $this->objParam->getParametro('id_institucion'));
+         //   $this->objParam->addFiltro("insti.nombre ilike ''%".$this->objParam->getParametro('desc_insti')."%''");
+     //   }
 
         if($this->objParam->getParametro('filtro_valor')!=''){
             $this->objParam->addFiltro($this->objParam->getParametro('filtro_campo')." = ".$this->objParam->getParametro('filtro_valor'));
         }
 
         $this->objParam->defecto('ordenacion', 'id_correspondencia');
-
         $this->objParam->defecto('dir_ordenacion', 'asc');
-
         $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
-
         $this->objParam->addFiltro("cor.sw_archivado = ''no'' ");
 
         if ($this->objParam->getParametro('vista')=='CorrespondenciaAdministracion' && $this->objParam->getParametro('estado')=='enviado')
@@ -242,7 +275,6 @@ class ACTCorrespondencia extends ACTbase
         }
         else{
             //$this->objParam->addFiltro(" cor.id_correspondencia_fk is null ");
-
             $this->objParam->addFiltro(" (cor.estado_corre is null or cor.estado_corre not in (''borrador_corre''))");
         }
 
@@ -638,12 +670,6 @@ class ACTCorrespondencia extends ACTbase
                 // $fecha_recepcion2 = $ruta['fecha_recepcion'];
             }
 
-
-
-
-
-
-
             $html .= '
 							  <tr>
 							    <td class="tg-9hbd1">' . $ruta['fisico'] . '</td>
@@ -653,14 +679,7 @@ class ACTCorrespondencia extends ACTbase
 								<td class="tg-9hbd1">' . $ruta['mensaje'] . '</td>
 								<td class="tg-9hbd1">' . $ruta['acciones'] . '</td>
 								<td class="tg-9hbd1">' . $fecha_recepcion2 . '</td>
-							  </tr> 
-							  
-							 
-						      
-						  
-						      ';
-
-
+							  </tr> ';                        
         }
 
         $html .= '</table>
@@ -996,8 +1015,6 @@ window.onload=function(){self.print();}
 
     function insertarCorrespondenciaExterna()
     {
-
-
         $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
         $this->objFunc = $this->create('MODCorrespondencia');
         if ($this->objParam->insertar('id_correspondencia')) {
@@ -1023,16 +1040,45 @@ window.onload=function(){self.print();}
     }
 
     function listarCorrespondenciaExterna()
-    {
-        $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
-        $this->objParam->addFiltro(" cor.tipo = ''".$this->objParam->getParametro('tipo')."''");
-        $this->objParam->addFiltro(" cor.estado = ''".$this->objParam->getParametro('estado')."''");
+    {   
+        if($this->objParam->getParametro('id_gestion')!=''){
+            $this->objParam->addFiltro("cor.id_gestion = " . $this->objParam->getParametro('id_gestion'));
+        }
+        if($this->objParam->getParametro('desde')!='' && $this->objParam->getParametro('hasta')!=''){
+            $this->objParam->addFiltro("(cor.fecha_documento::date  BETWEEN ''%".$this->objParam->getParametro('desde')."%''::date  and ''%".$this->objParam->getParametro('hasta')."%''::date)");
+        }
+        if($this->objParam->getParametro('desde')!='' && $this->objParam->getParametro('hasta')==''){
+            $this->objParam->addFiltro("(cor.fecha_documento::date  >= ''%".$this->objParam->getParametro('desde')."%''::date)");
+        }
+        if($this->objParam->getParametro('desde')=='' && $this->objParam->getParametro('hasta')!=''){
+            $this->objParam->addFiltro("(cor.fecha_documento::date  <= ''%".$this->objParam->getParametro('hasta')."%''::date)");
+        }
+        if($this->objParam->getParametro('cite')!=''){
+            $this->objParam->addFiltro("cor.cite ilike ''%".$this->objParam->getParametro('cite')."%''");
+        }
+        if($this->objParam->getParametro('numero')!=''){
+            $this->objParam->addFiltro("cor.numero ilike ''%".$this->objParam->getParametro('numero')."%''");
+        }
+        if($this->objParam->getParametro('observacion')!=''){
+            $this->objParam->addFiltro("cor.observacion ilike ''%".$this->objParam->getParametro('observacion')."%''");
+        }
+        if($this->objParam->getParametro('referencia')!=''){
+            $this->objParam->addFiltro("cor.referencia ilike ''%".$this->objParam->getParametro('referencia')."%''");
+        }
+
+        if($this->objParam->getParametro('tipo')!=''){            
+            $this->objParam->addFiltro(" cor.tipo = ''".$this->objParam->getParametro('tipo')."''");
+        }
+        if($this->objParam->getParametro('estado')!=''){            
+            $this->objParam->addFiltro(" cor.estado = ''".$this->objParam->getParametro('estado')."''");
+        }
+
+        $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);                
         if ($this->objParam->getParametro('vista')=='CorrespondenciaAdministracion' && $this->objParam->getParametro('estado')=='enviado')
         {
         }
         else{
             $this->objParam->addFiltro(" cor.id_correspondencia_fk is null ");
-
             $this->objParam->addFiltro(" (cor.estado_corre is null or cor.estado_corre not in (''borrador_corre''))");
         }
 
@@ -1397,5 +1443,15 @@ window.onload=function(){self.print();}
         }
         $this->res->imprimirRespuesta($this->res->generarJson());
     }
+    //
+    function adicionarCorrespondencia()
+    {
+        $this->objParam->addParametro('id_funcionario_usuario', $_SESSION["ss_id_funcionario"]);
+        $this->objFunc = $this->create('MODCorrespondencia');
+        $this->res = $this->objFunc->adicionarCorrespondencia();        
+        $this->res->imprimirRespuesta($this->res->generarJson());
+    }
+
+
 }
 ?>

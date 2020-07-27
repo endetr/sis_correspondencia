@@ -269,7 +269,7 @@ class MODCorrespondencia extends MODbase{
 		//Define los parametros para la funcion
 		$vista = $this->aParam->getParametro('vista');
 		$this->aParam->addParametro('vista', $vista);
-
+		
 		$this->setParametro('vista','vista','varchar');
 		$this->setParametro('estado','estado','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
@@ -674,6 +674,7 @@ class MODCorrespondencia extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_correspondencia','id_correspondencia','int4');
 		$this->setParametro('id_origen','id_origen','int4');
+		$this->setParametro('proveido','proveido','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -819,7 +820,7 @@ class MODCorrespondencia extends MODbase{
 		$this->captura('fecha_deriv','timestamp');
 		$this->captura('fecha_recepcion','timestamp');
 		$this->captura('fisico','varchar'); //#7
-
+		$this->captura('proveido','varchar'); 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -839,7 +840,7 @@ class MODCorrespondencia extends MODbase{
 		$this->setParametro('id_correspondencia','id_correspondencia','int4');
 		$this->setParametro('sw_archivado','sw_archivado','varchar');
 		$this->setParametro('observaciones_archivado','observaciones_archivado','varchar');
-
+		$this->setParametro('proveido','proveido','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -918,6 +919,7 @@ class MODCorrespondencia extends MODbase{
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 
 		$this->setParametro('id_funcionario_usuario','id_funcionario_usuario','int4');
+		$this->setParametro('cite','cite','varchar');
 		$this->setParametro('tipo','tipo','varchar');
 		$this->setParametro('estado','estado','varchar');
 
@@ -994,10 +996,6 @@ class MODCorrespondencia extends MODbase{
 		$this->armarConsulta();
 		//echo $this->getConsulta();
 		$this->ejecutarConsulta();
-
-
-
-
 		//Devuelve la respuesta
 		return $this->respuesta;
 
@@ -1444,6 +1442,52 @@ class MODCorrespondencia extends MODbase{
         $this->ejecutarConsulta();
         //Devuelve la respuesta
         return $this->respuesta;
-    }
+	}
+	//
+	function adicionarCorrespondencia(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='corres.ft_correspondencia_ime';
+		$this->transaccion='CO_COR_ADI';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para la funcion
+		$this->setParametro('id_funcionario_usuario','id_funcionario_usuario','int4');
+		$this->setParametro('tipo','tipo','varchar');
+		$this->setParametro('id_documento','id_documento','int4');
+		$this->setParametro('fecha_documento','fecha_documento','date');
+		$this->setParametro('id_institucion_remitente','id_institucion_remitente','int4');
+		$this->setParametro('nivel_prioridad','nivel_prioridad','varchar');
+		$this->setParametro('id_depto','id_depto','int4');
+		$this->setParametro('fecha_creacion_documento','fecha_creacion_documento','timestamp');
+		$this->setParametro('tipo_documento','tipo_documento','varchar');
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+	//
+	function modificarCorrespondenciaDetalles(){
+		//Definicion de variables para ejecucion del procedimiento
+		$this->procedimiento='corres.ft_correspondencia_ime';
+		$this->transaccion='CO_CORDETS_MOD';
+		$this->tipo_procedimiento='IME';
+
+		//Define los parametros para la funcion
+		$this->setParametro('id_correspondencia','id_correspondencia','int4');
+		$this->setParametro('id_correspondencia_fk','id_correspondencia_fk','int4');
+		$this->setParametro('mensaje','mensaje','text');
+		$this->setParametro('id_acciones','id_acciones','varchar');
+		$this->setParametro('id_funcionario','id_funcionario','integer'); //son a los que enviaremos
+		$this->setParametro('fisico','fisico','varchar'); //#7
+
+		//Ejecuta la instruccion
+		$this->armarConsulta();
+		$this->ejecutarConsulta();
+
+		//Devuelve la respuesta
+		return $this->respuesta;
+	}
 }
 ?>

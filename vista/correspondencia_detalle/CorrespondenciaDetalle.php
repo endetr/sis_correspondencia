@@ -17,7 +17,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
     Phx.vista.CorrespondenciaDetalle=Ext.extend(Phx.gridInterfaz,{
-
+        
             constructor:function(config){
                 this.maestro=config.maestro;
                 //* Creación para el combo en la grilla/
@@ -75,6 +75,7 @@ header("content-type: text/javascript; charset=UTF-8");
                             {boxLabel: 'Gerencia', name: 'tipo_filtro', inputValue: 'gerencia', checked: true},
                             {boxLabel: 'Funcionario', name: 'tipo_filtro', inputValue: 'funcionario'}
                         ],
+                        width : 320,
                     },
                     type : 'RadioGroupField',
                     id_grupo : 0,
@@ -88,8 +89,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         allowBlank: false,
                         triggerAction : 'all',
                         emptyText : 'Seleccione Opcion...',
-                        width : 250,
-                        height: 300,
+                        width : 320,
                         mode : 'local',
                         store : new Ext.data.ArrayStore({
                             fields : ['ID', 'valor'],
@@ -108,6 +108,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     type : 'ComboBox',
                     valorInicial:'no',
                     grid : true,
+                    egrid:true,
                     form : true
                 },
                 {
@@ -115,7 +116,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         name: 'acciones',
                         fieldLabel: 'Acciones',
                         allowBlank: true,
-                        anchor: '80%',
+                        width : 320,
                         gwidth: 100,
                         maxLength:4
                     },
@@ -148,7 +149,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         mode:'remote',
                         pageSize:6,
                         queryDelay:1000,
-                        anchor: '80%',
+                        width : 320,
                         listWidth: 350,
                         gwidth: 150,
                         minChars:2,
@@ -188,12 +189,11 @@ header("content-type: text/javascript; charset=UTF-8");
                         mode:'remote',
                         pageSize:10,
                         queryDelay:1000,
-                        width:250,
+                        width : 320,
                         minChars:2,
                         enableMultiSelect:true,
                         hidden:true
                     },
-
                     type:'AwesomeCombo',
                     id_grupo:3,
                     grid:false,
@@ -226,7 +226,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         mode:'remote',
                         pageSize:10,
                         queryDelay:1000,
-                        width:250,
+                        width : 320,
                         minChars:2,
                         enableMultiSelect:true
                     },
@@ -240,8 +240,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         origen:'FUNCIONARIOCAR',
                         tinit:true,
                         fieldLabel:'Funcionario Destino',
-                        gdisplayField:'desc_funcionario',//mapea al store del grid
-                        gwidth:200,
+                        gdisplayField:'desc_funcionario',
+                        width : 320,
                         renderer:function (value, p, record){
                             if(record.data['estado']=='pendiente_recibido')
                                 return String.format('<b><font color="blue">{0}</font></b>', record.data['desc_funcionario']);
@@ -263,8 +263,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         origen:'PERSONA',
                         tinit:true,
                         fieldLabel:'Persona',
-                        gdisplayField:'desc_persona',//mapea al store del grid
-                        gwidth:200,
+                        gdisplayField:'desc_persona',
+                        width : 320,
                         renderer:function (value, p, record){
                             return String.format('{0}', record.data['desc_persona']);
                         }
@@ -286,10 +286,9 @@ header("content-type: text/javascript; charset=UTF-8");
                         allowBlank:false,
                         origen:'INSTITUCION',
                         gdisplayField:'desc_institucion',
-                        gwidth:200,
+                        width : 320,
                         hidden:true,
                         renderer:function (value, p, record){return String.format('{0}', record.data['desc_institucion']);}
-
                     },
                     type:'ComboRec',
                     id_grupo:3,
@@ -301,8 +300,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         name: 'mensaje',
                         fieldLabel: 'Mensaje',
                         allowBlank: false,
-                        width: 300,
-                        growMin:100,
+                        width : 320,
+                        growMin:50,
                         grow : true,
                         gwidth: 100
                     },
@@ -334,7 +333,6 @@ header("content-type: text/javascript; charset=UTF-8");
                         valueField: 'id_accion',
                         displayField: 'nombre',
                         gdisplayField:'desc_acciones',//mapea al store del grid
-
                         hiddenName: 'id_acciones',
                         forceSelection:true,
                         typeAhead: true,
@@ -343,7 +341,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         mode:'remote',
                         pageSize:10,
                         queryDelay:1000,
-                        width:250,
+                        width : 320,
                         gwidth:200,
                         minChars:2,
                         enableMultiSelect:true,
@@ -359,7 +357,7 @@ header("content-type: text/javascript; charset=UTF-8");
                         name: 'estado',
                         fieldLabel: 'Estado',
                         allowBlank: true,
-                        anchor: '80%',
+                        width : 320,
                         gwidth: 100,
                         maxLength:4
                     },
@@ -407,7 +405,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 direction: 'ASC'
             },
             bdel:true,
-            bsave:true,
+            bsave : false,
             bnew:true,
 
             iniciarEventos:function(){
@@ -646,10 +644,10 @@ header("content-type: text/javascript; charset=UTF-8");
                 me.window = new Ext.Window({
                     title: me.title,
                     modal: me.winmodal,
-                    width: me.fwidth,
-                    height: me.fheight,
+                    width: '37%',
+                    height: '41%',
                     bodyStyle: 'padding:5px;',
-                    layout: 'fit',
+                    //layout: 'fit',
                     hidden: true,
                     autoScroll: false,
                     maximizable: true,
@@ -701,6 +699,22 @@ header("content-type: text/javascript; charset=UTF-8");
                     autoDestroy: true,
                     closeAction: 'hide'
                 });
+            },
+            //
+            onButtonSave: function() {
+                Ext.Ajax.request({
+                    url : '../../sis_correspondencia/control/Correspondencia/modificarCorrespondenciaDetalles',
+                    params : {
+                        id_correspondencia : this.maestro.id_correspondencia,
+                        id_correspondencia_fk: this.maestro.id_correspondencia_fk,
+                        fisico : this.maestro.fisico,
+                        id_origen : this.maestro.id_origen,
+                    },
+                    success : this.successDerivar,
+                    failure : this.conexionFailure,
+                    timeout : this.timeout,
+                    scope : this
+                });   
             },
 
         }

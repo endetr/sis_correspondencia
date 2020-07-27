@@ -22,19 +22,19 @@ Phx.vista.DerivacionCorrespondenciaExterna = {
 	bedit:true,
 	bdel:true,
 	swEstado: 'pendiente_recepcion_externo',
-	gruposBarraTareas: [{
-		name: 'pendiente_recepcion_externo',
-		title: '<H1 align="center"><i class="fa fa-thumbs-o-down"></i> Pendientes</h1>',
-		grupo: 0,
-		height: 0
-	},
+	gruposBarraTareas: [
+		{
+			name: 'pendiente_recepcion_externo',
+			title: '<H1 align="center"><i class="fa fa-thumbs-o-down"></i> Pendientes</h1>',
+			grupo: 0,
+			height: 0
+		},
 		{
 			name: 'enviado',
 			title: '<H1 align="center"><i class="fa fa-eye"></i> Derivados</h1>',
 			grupo: 1,
 			height: 0
 		}
-
 	],
 
 	beditGroups: [0, 1],
@@ -46,7 +46,7 @@ Phx.vista.DerivacionCorrespondenciaExterna = {
 	requireclase: 'Phx.vista.Correspondencia',
 	title: 'Correspondencia Recibida',
 	nombreVista: 'DerivacionCorrespondenciaExterna',
-	fwidth: '35%',
+	fwidth: '37%',
 	ActList:'../../sis_correspondencia/control/Correspondencia/listarCorrespondenciaExterna',
 	ActSave: '../../sis_correspondencia/control/Correspondencia/insertarCorrespondenciaExterna',
 
@@ -238,7 +238,30 @@ Phx.vista.DerivacionCorrespondenciaExterna = {
 			timeout: this.timeout,
 			scope: this
 		});
-	}
+	},
+	//
+	onReloadPage : function(m){    			
+		this.maestro = m;
+		console.log('=>',this);
+		this.store.baseParams = { 
+			id_gestion:  this.maestro.id_gestion,
+			desde:  this.maestro.desde,
+			hasta:  this.maestro.hasta,
+			cite:  this.maestro.cite,
+			numero:  this.maestro.numero,
+			observacion:  this.maestro.observacion,
+			referencia:  this.maestro.referencia,
+			//id_institucion:this.maestro.id_institucion_destino,
+			start:0,
+			limit:50,
+			sort:'id_correspondencia',
+			dir:'DESC',
+			tipo:this.tipo,
+			estado:this.swEstado,
+			contenedor: this.idContenedor//'docs-RECEPEXTE'
+		};
+		this.store.reload({ params: this.store.baseParams});
+	},
 	
 };
 </script>

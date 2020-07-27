@@ -228,13 +228,6 @@ WITH (oids = false);
 
 
 /***********************************I-SCP-MANU-CORRES-2-9/12/2019*****************************************/
-ALTER TABLE corres.tcorrespondencia
-  ADD COLUMN fecha_creacion_documento TIMESTAMP WITHOUT TIME ZONE;
-
-COMMENT ON COLUMN corres.tcorrespondencia.fecha_creacion_documento
-IS 'Fecha de Creación del Documento
-Fecha de recepción';
-
 
 ALTER TABLE corres.tcorrespondencia
   ADD CONSTRAINT tcorrespondencia_id_alarma_key 

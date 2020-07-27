@@ -173,8 +173,8 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 			params: {
 				id_correspondencia: rec.data.id_correspondencia,
 				sw_archivado :'no',
-				observaciones_archivado:''
-				
+				observaciones_archivado:'',
+				proveido:''				
 			},
 			success: this.successFinalizar,
 			failure: this.conexionFailure,

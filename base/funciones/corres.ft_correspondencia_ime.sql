@@ -102,6 +102,7 @@ DECLARE
     v_nro_tramite           varchar;
     v_obs                   varchar;
     v_count integer; --#7
+    v_auxiliar 				RECORD;
 BEGIN
 
   v_nombre_funcion = 'corres.ft_correspondencia_ime';
@@ -586,6 +587,8 @@ BEGIN
       /*
       	verifica que tenga hijos con estado borrador detalle recibido
       */
+      
+        
       select estado_ant
       into v_estado_aux
       from corres.tcorrespondencia_estado
@@ -704,16 +707,27 @@ BEGIN
                                                     '',NULL,null,NULL,'si');
 
 
-      --busqueda de la alarma generada
-      SELECT al.id_alarma
-      INTO v_id_alarma_reg
-      FROM param.talarma al
-      WHERE id_funcionario=g_registros.id_funcionario and titulo ilike '%'||g_registros.numero||'%'
-      order by id_alarma desc limit 1;
+              --busqueda de la alarma generada
+              SELECT al.id_alarma
+              INTO v_id_alarma_reg
+              FROM param.talarma al
+              WHERE id_funcionario=g_registros.id_funcionario and titulo ilike '%'||g_registros.numero||'%'
+              order by id_alarma desc limit 1;
 
-      UPDATE corres.tcorrespondencia
-      SET  id_alarma=v_id_alarma_reg
-      Where id_correspondencia=g_registros.id_correspondencia;
+              UPDATE corres.tcorrespondencia
+              SET  id_alarma=v_id_alarma_reg
+              Where id_correspondencia=g_registros.id_correspondencia;
+              
+              SELECT id_correspondencia
+              INTO v_id
+              FROM corres.tcorrespondencia
+              WHERE id_correspondencia_fk=v_parametros.id_correspondencia and sw_fisico='si';		
+
+              IF(v_id is not null) THEN
+                  UPDATE corres.tcorrespondencia
+                  SET  proveido=v_parametros.proveido
+                  WHERE id_correspondencia=v_id;		
+              END IF;
 
       END LOOP;
       /*Mod Ana Maria por el estado nunca llega */
@@ -755,8 +769,8 @@ BEGIN
       where id_correspondencia_fk = v_parametros.id_correspondencia and
             estado = 'borrador_detalle_recibido';
 
-
-
+		
+		
       v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Correspondencia derivada(a)');
       v_resp = pxp.f_agrega_clave(v_resp,'id_correspondencia',v_parametros.id_correspondencia::varchar);
 
@@ -1066,7 +1080,7 @@ BEGIN
 
     begin
       Select coalesce(observaciones_archivado,'')
-      into v_observaciones_archivado
+      into v_correo
       From corres.tcorrespondencia
       where id_correspondencia=v_parametros.id_correspondencia;
 
@@ -1075,6 +1089,7 @@ BEGIN
       id_usuario_mod = p_id_usuario,
       fecha_mod = now(),
       observaciones_archivado =v_observaciones_archivado||'-'||v_parametros.observaciones_archivado
+	  ,proveido=v_parametros.proveido
       WHERE id_correspondencia = v_parametros.id_correspondencia;
 
       --Definicion de la respuesta
@@ -1444,11 +1459,22 @@ elsif(p_transaccion='CO_COREXT_MOD')then
     elsif(p_transaccion='CO_COREXTEST_INS')then
 
     begin
-      UPDATE corres.tcorrespondencia
-      SET estado = v_parametros.estado,
-          id_usuario_mod = p_id_usuario,
-          fecha_mod = now()
-      WHERE id_correspondencia = v_parametros.id_correspondencia;
+    	select 1
+        INTO v_count
+        from corres.tcorrespondencia cor
+        where cor.id_correspondencia = v_parametros.id_correspondencia AND
+        cor.id_correspondencia_fk is null AND
+        (cor.cite is null OR cor.id_institucion is null);
+                  	    
+    	IF v_count=1 THEN
+        	raise EXCEPTION 'Agregar los campos de Cite y/o Institucion Remitente';       	    
+        END IF;	
+        
+        UPDATE corres.tcorrespondencia
+        SET estado = v_parametros.estado,
+            id_usuario_mod = p_id_usuario,
+            fecha_mod = now()
+        WHERE id_correspondencia = v_parametros.id_correspondencia;
 
       --Definicion de la respuesta
       v_resp = pxp.f_agrega_clave(v_resp,'mensaje',
@@ -1738,6 +1764,143 @@ elsif(p_transaccion='CO_COREXT_MOD')then
       return v_resp;
 
     end;
+    
+	/*********************************
+    #TRANSACCION:  'CO_COR_ADI'
+    #DESCRIPCION:  Adicionar de correspondencia externa
+    #AUTOR:        manu
+    #FECHA:        13-12-2011 16:13:21
+    ***********************************/
+
+  	elsif(p_transaccion='CO_COR_ADI')then
+
+    begin
+		
+    	--RAISE EXCEPTION '%',v_parametros;
+    
+        SELECT g.id_gestion
+        INTO v_id_gestion
+        FROM param.tgestion g
+        WHERE g.estado_reg = 'activo' and g.gestion = to_char(now()::date, 'YYYY')::integer;
+        
+        SELECT p.id_periodo,p.fecha_ini, p.fecha_fin
+        INTO v_id_periodo,v_fecha_ini,v_fecha_fin
+        FROM param.tperiodo p
+        JOIN param.tgestion ges on ges.id_gestion = p.id_gestion and ges.estado_reg = 'activo'
+        WHERE p.estado_reg = 'activo' and now()::date between p.fecha_ini and p.fecha_fin;    
+    	
+        SELECT d.codigo
+        INTO v_codigo_documento
+        FROM param.tdocumento d
+        WHERE d.id_documento = v_parametros.id_documento;
+        
+        SELECT dep.id_depto
+        INTO v_id_depto
+        FROM param.tdepto_uo duo
+        JOIN segu.tsubsistema sis ON sis.codigo = 'CORRES'
+        JOIN param.tdepto dep ON dep.id_depto = duo.id_depto
+        WHERE duo.id_uo = ANY (v_id_uo);
+        
+    	--v_num_corre =  param.f_obtener_correlativo(v_codigo_documento,NULL,v_id_uo[2],v_id_depto,p_id_usuario,'CORRES',NULL);
+        v_num_corre =  param.f_obtener_correlativo(v_codigo_documento,v_id_periodo,NULL,v_parametros.id_depto, p_id_usuario,'CORRES',NULL);
+		insert into corres.tcorrespondencia(
+          			estado,
+                    estado_reg, 
+                    fecha_documento,
+                    id_depto, 
+                    id_documento,
+                    id_funcionario, 
+                    id_gestion,
+                    id_institucion,
+                    id_periodo,
+                    id_persona,
+                    id_uo, 
+                    mensaje, 
+                    nivel, 
+                    nivel_prioridad, 
+                    numero,
+                    referencia,
+                    tipo, 
+                    fecha_reg, 
+                    id_usuario_reg, 
+                    fecha_mod, 
+                    id_usuario_mod,
+                    id_correspondencias_asociadas,
+                    fecha_creacion_documento,
+                    persona_destino,
+                    fecha_envio) 
+        values ( 
+        			'borrador_recepcion_externo',
+                    'activo',
+              		now(),         
+					v_parametros.id_depto, 
+                    v_parametros.id_documento,
+               		v_parametros.id_funcionario_usuario,
+               		v_id_gestion,
+               		NULL,
+               		v_id_periodo,
+                    NULL,
+               		NULL, 
+                    NULL, 
+                    0,
+               		'2media', 
+                    v_num_corre,
+               		null,
+               		'externa', 
+                    now(), 
+                    p_id_usuario, 
+                    null, 
+                    null,
+               		null,
+                	now(),
+                	null,
+                	null 
+               ) RETURNING id_correspondencia
+        into v_id_correspondencia;
+
+        v_id_origen = v_id_correspondencia;
+
+        UPDATE corres.tcorrespondencia
+        set id_origen = v_id_correspondencia
+        where id_correspondencia = v_id_correspondencia;  
+    
+        --Definicion de la respuesta
+        v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Correspondencia almacenado(a) con exito (id_correspondencia'||v_id_correspondencia||')');
+        v_resp = pxp.f_agrega_clave(v_resp,'id_correspondencia',v_id_correspondencia::varchar);
+
+        --Devuelve la respuesta
+    	return v_resp;
+
+    end;
+    
+    /*********************************
+    #TRANSACCION:  'CO_CORDETS_MOD'
+    #DESCRIPCION:    modificar fisico
+    #AUTOR:        manu
+    #FECHA:            01/08/2018
+    ***********************************/
+
+    elsif(p_transaccion='CO_CORDETS_MOD')then
+
+    begin
+    	SELECT COUNT(*) 
+        INTO v_count
+        FROM corres.tcorrespondencia c
+        WHERE c.id_correspondencia = v_parametros.id_correspondencia_fk::INTEGER
+        and c.sw_fisico = 'si'
+        and c.estado <> 'anulado';
+            
+		IF (v_parametros.fisico = 'si' AND v_count > 0 )THEN
+        	raise exception 'Ya existe un funcionario que tiene el fisico';
+        ELSE
+        	UPDATE corres.tcorrespondencia
+             set sw_fisico = v_parametros.fisico,fecha_mod=now()
+             where id_correspondencia = v_parametros.id_correspondencia;	
+        END IF;            
+    	return v_resp;
+    end;
+    
+    
 
     else
 
@@ -1760,4 +1923,5 @@ LANGUAGE 'plpgsql'
 VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
+PARALLEL UNSAFE
 COST 100;

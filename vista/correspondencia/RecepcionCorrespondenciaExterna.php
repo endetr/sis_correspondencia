@@ -20,28 +20,28 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
 Phx.vista.RecepcionCorrespondenciaExterna = {
-    bsave:false,
+	bsave:false,
+	bnew:false,
 	swEstado: 'borrador_recepcion_externo',
 	urlDepto:'../../sis_parametros/control/Depto/listarDeptoFiltradoDeptoUsuario',
-	gruposBarraTareas: [{
-		name: 'borrador_recepcion_externo',
-		title: '<H1 align="center"><i class="fa fa-thumbs-o-down"></i> Recepcionar</h1>',
-		grupo: 0,
-		height: 0
-	},
+	gruposBarraTareas: [
+		{
+			name: 'borrador_recepcion_externo',
+			title: '<H1 align="center"><i class="fa fa-thumbs-o-down"></i> Recepcionar</h1>',
+			grupo: 0,
+			height: 0
+		},
 		{
 			name: 'pendiente_recepcion_externo',
 			title: '<H1 align="center"><i class="fa fa-eye"></i> Finalizados</h1>',
 			grupo: 1,
 			height:   0
 		}
-
 	],
 	beditGroups: [0, 1],
 	bactGroups: [0, 1],
 	btestGroups: [0,1],
 	bexcelGroups: [0, 1],
-
 
     require: '../../../sis_correspondencia/vista/correspondencia/Correspondencia.php',
 	requireclase: 'Phx.vista.Correspondencia',
@@ -69,31 +69,37 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
         this.Atributos[this.getIndAtributo('id_depto')].form=true;
         //habilitacion de campo departamento
         
-	    Phx.vista.RecepcionCorrespondenciaExterna.superclass.constructor.call(this,config);
-	    
+		Phx.vista.RecepcionCorrespondenciaExterna.superclass.constructor.call(this,config);
+		
+	    /*this.addButton('Adicionar', {
+			text: 'Agregar',
+			iconCls: 'bnew',
+			disabled: false,
+			handler: this.BAdicionar,
+			tooltip: '<b>Adicionar correspondencia</b>'
+		});*/
+			
 	    this.addButton('Finalizar', {
-				text: 'Finalizar Recepción',
-				iconCls: 'bgood',
-				disabled: true,
-				handler: this.BFinalizar,
-				tooltip: '<b>Finalizar Recepción</b><br/>Finalizar el registro del Documento'
-			});
+			text: 'Finalizar Recepción',
+			iconCls: 'bgood',
+			disabled: true,
+			handler: this.BFinalizar,
+			tooltip: '<b>Finalizar Recepción</b><br/>Finalizar el registro del Documento'
+		});
 
-            this.getBoton('Plantilla').hide();
-            this.getBoton('FinalizarExterna').hide();
-            this.getBoton('Corregir').hide();
-            this.getBoton('Derivar').hide();
-            this.getBoton('HojaRuta').hide();
-            this.getBoton('Historico').hide();
-            this.getBoton('Archivar').hide();
-            this.getBoton('Habilitar').hide();
-            this.getBoton('ImpCodigoDoc').hide();   
-                
-		  
+		this.getBoton('Plantilla').hide();
+		this.getBoton('FinalizarExterna').hide();
+		this.getBoton('Corregir').hide();
+		this.getBoton('Derivar').hide();
+		this.getBoton('HojaRuta').hide();
+		this.getBoton('Historico').hide();
+		this.getBoton('Archivar').hide();
+		this.getBoton('Habilitar').hide();
+		this.getBoton('ImpCodigoDoc').hide();   
+                		  
 		this.init();  
 		this.store.baseParams = {'tipo': this.tipo,'estado': this.swEstado};
         this.load({params: {start: 0, limit: 50}})
-
 		//this.iniciarEventos();
     
    },
@@ -101,10 +107,8 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 	   	this.Cmp.id_institucion_remitente.on('select',function(combo,record,index){
 	    	this.Cmp.id_persona_remitente.store.baseParams.id_institucion=combo.getValue();
 	   		this.Cmp.id_persona_remitente.reset();
-	   		this.Cmp.id_persona_remitente.modificado=true;
-	   		
+	   		this.Cmp.id_persona_remitente.modificado=true;	   		
 	   	},this)
-
    },
    east : undefined,
    
@@ -112,53 +116,44 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 	getParametrosFiltro: function () {
 		this.store.baseParams.estado = this.swEstado;
 	},
-			actualizarSegunTab: function (name, indice) {
-			console.log(name);
-            this.getBoton('Plantilla').hide();
-            this.getBoton('FinalizarExterna').hide();
-            this.getBoton('Corregir').hide();
-            this.getBoton('Derivar').hide();
-            this.getBoton('HojaRuta').hide();
-            this.getBoton('Historico').hide();
-            this.getBoton('Archivar').hide();
-            this.getBoton('Habilitar').hide();
-            this.getBoton('ImpCodigoDoc').hide();
-            //this.getBoton('ImpCodigo').hide();   
 
-			if(name=='borrador_recepcion_externo'){
-			
-			this.getBoton('Corregir').hide();
-			 
-			}else{
-			
+	actualizarSegunTab: function (name, indice) {
+		console.log(name);
+		this.getBoton('Plantilla').hide();
+		this.getBoton('FinalizarExterna').hide();
+		this.getBoton('Corregir').hide();
+		this.getBoton('Derivar').hide();
+		this.getBoton('HojaRuta').hide();
+		this.getBoton('Historico').hide();
+		this.getBoton('Archivar').hide();
+		this.getBoton('Habilitar').hide();
+		this.getBoton('ImpCodigoDoc').hide();
+		//this.getBoton('ImpCodigo').hide();   
+
+		if(name=='borrador_recepcion_externo'){
+			this.getBoton('Corregir').hide();	
+		}else{		
 			//this.getBoton('Corregir').show();
 			this.getBoton('Corregir').hide();
-			this.getBoton('ImpCodigo').show();//habilita impresion de sticker en administracion
-		
+			this.getBoton('ImpCodigo').show();//habilita impresion de sticker en administracion		
 		}
 		this.swEstado = name;
 		this.getParametrosFiltro();
-		this.load();
-	
-
+		this.load();	
 	},
     preparaMenu:function(n){
       	
       	Phx.vista.RecepcionCorrespondenciaExterna.superclass.preparaMenu.call(this,n);      	
-		  var data = this.getSelectedData();
-
-		console.log('data',data)
-		  var tb =this.tbar;
-		  //si el archivo esta escaneado se permite visualizar
-
-
+		var data = this.getSelectedData();
+		console.log('data====',data)
+		var tb =this.tbar;
+		//si el archivo esta escaneado se permite visualizar
 		if (data['estado'] == 'borrador_recepcion_externo') {
-
+			this.getBoton('Adicionar').enable();
 			this.getBoton('SubirDocumento').enable();
 			this.getBoton('Adjuntos').enable();
             this.getBoton('ImpCodigo').enable();
 		}
-
 
 		if (data['version'] > 0) {
 			this.getBoton('VerDocumento').enable();
@@ -174,34 +169,30 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 			this.getBoton('Corregir').enable();
 			this.getBoton('Finalizar').disable();
 			this.getBoton('ImpCodigo').disable();
-		   // this.getBoton('ImpCodigoDoc').disable();
+		    // this.getBoton('ImpCodigoDoc').disable();
 		    this.getBoton('edit').disable();
 			this.getBoton('del').disable();
-			 this.getBoton('HojaRuta').enable();
-			 //habilitacion de imprpesion de CITE en el tab finalizar
-			 this.getBoton('ImpCodigo').enable();
+			this.getBoton('HojaRuta').enable();
+			//habilitacion de imprpesion de CITE en el tab finalizar
+			this.getBoton('ImpCodigo').enable();
 		}
-		
-	
-		 return tb
-		
+		return tb
 	},
+	//
 	liberaMenu:function(){
-        var tb = Phx.vista.RecepcionCorrespondenciaExterna.superclass.liberaMenu.call(this);
+		var tb = Phx.vista.RecepcionCorrespondenciaExterna.superclass.liberaMenu.call(this);
         if(tb){
-           
             this.getBoton('SubirDocumento').disable();
 			this.getBoton('Adjuntos').disable();
 			this.getBoton('VerDocumento').disable();
 			this.getBoton('Finalizar').disable();
 			this.getBoton('ImpCodigo').disable();
-		 // this.getBoton('ImpCodigoDoc').disable();
+		 	// this.getBoton('ImpCodigoDoc').disable();
 		    this.getBoton('edit').disable();
-			this.getBoton('del').disable();
-                    
+			this.getBoton('del').disable();                    
         }
        return tb
-  },
+ 	},
 	onButtonNew: function () {
         console.log("Entro aqui Recepcion Corres Externa");
 		this.tipo = this.getComponente('tipo');
@@ -234,7 +225,6 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
             callback : function (r) {
                 this.Cmp.id_depto.setValue(r[0].data.id_depto);
             }, scope : this
-
         });        
 	},
 	
@@ -243,24 +233,58 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 		var cmbDoc = this.getComponente('id_documento');
 	
 		Phx.vista.RecepcionCorrespondenciaExterna.superclass.onButtonEdit.call(this);
-		
-        this.ocultarComponente(this.Cmp.id_funcionario);
-		this.ocultarComponente(this.Cmp.id_uo);
-		this.ocultarComponente(this.Cmp.id_funcionario_saliente);
-		this.ocultarComponente(this.Cmp.id_persona_destino);
-		this.ocultarComponente(this.Cmp.id_institucion_destino);
-		this.ocultarComponente(this.Cmp.id_funcionarios);
-		this.ocultarComponente(this.Cmp.asociar);
-		this.ocultarComponente(this.Cmp.id_correspondencias_asociadas);
-		this.ocultarComponente(this.Cmp.id_acciones);
-        this.ocultarComponente(this.Cmp.fecha_creacion_documento); //#4 MCGH
-
-		this.adminGrupo({ ocultar: [0,3,4]});
-
+				
 		this.tipo.setValue('externa');
 		this.tipo.disable(true);
-  	    this.ocultarComponente(this.Cmp.id_funcionario);
-	}
+		
+		this.adminGrupo({ ocultar: [0,3,4], mostrar:[1,2]}); 
+		this.ocultarComponente(this.Cmp.id_persona_remitente); 
+		this.ocultarComponente(this.Cmp.id_funcionario);
+		this.ocultarComponente(this.Cmp.asociar);
+		this.ocultarComponente(this.Cmp.id_correspondencias_asociadas);
+		this.ocultarComponente(this.Cmp.asociar);
+	},
+	//
+	BAdicionar: function () {
+		this.window.buttons[0].show();				
+		Phx.CP.loadWindows('../../../sis_correspondencia/vista/correspondencia/adicionarCorrespondencia.php', 
+		'Agregar Correspondencia ...', {
+			width : 400,
+			height : 150
+		}, {
+			//params: parametros			
+		}, 
+		this.idContenedor, 
+		'adicionarCorrespondencia')	
+        
+	},
+	//
+	postReloadPage:function(m){
+		this.maestro = m; 
+	},
 	
+    onReloadPage : function(m){    			
+		this.maestro = m;
+		console.log('=!!>',this);
+		this.store.baseParams = { 
+			id_gestion:  this.maestro.id_gestion,
+			desde:  this.maestro.desde,
+			hasta:  this.maestro.hasta,
+			cite:  this.maestro.cite,
+			numero:  this.maestro.numero,
+			observacion:  this.maestro.observacion,
+			referencia:  this.maestro.referencia,
+			//id_institucion:this.maestro.id_institucion_destino,
+			//desc_insti:this.maestro.desc_insti,
+			start:0,
+			limit:50,
+			sort:'id_correspondencia',
+			dir:'DESC',
+			tipo:this.tipo,
+			estado:this.swEstado,
+			contenedor: this.idContenedor//'docs-RECEPEXTE'
+		};
+		this.store.reload({ params: this.store.baseParams});
+	},
 };
 </script>

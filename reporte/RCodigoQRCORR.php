@@ -55,20 +55,17 @@ class RCodigoQRCORR extends ReportePDF {
 		//$this->setX(-10);
 		$this->setY(195);
 		$ormargins = $this->getOriginalMargins();
-		$this->SetFont('times', 'B', 14);
+		$this->SetFont('times', 'B', 11);
 		$this->SetTextColor(0, 0, 0);
 		
 		$this->StartTransform();
 		$this->Rotate(90,10,10);
+
 		$c1 = substr(($this->cod['num']),-4);
 		$c2 = substr($c1,2);
 		$resultado = substr(($this->cod['num']),0,-4);
 		$res=strlen(($this->cod['num']));
-		
-		$this->Cell(20, 0, '', '', 0, 'C');
-		$this->Cell(7, 0,'ETR-'.$resultado.$c2, '', 0, 'C');
-			
-		$this->Ln();
+
 		setlocale(LC_TIME, 'es_ES');
 		$dia = date("d",strtotime($this->cod['fec']));
 		$month = date("m",strtotime($this->cod['fec']));
@@ -77,8 +74,17 @@ class RCodigoQRCORR extends ReportePDF {
 		$anio = date("Y",strtotime($this->cod['fec']));
 		$hora = date("H:i:s",strtotime($this->cod['fec']));	
 		
+		$this->Cell(7, 0, '', '', 0, 'C');
+		$this->Cell(7, 0, 'RECIBIDO - '.$dia.'-'.strtoupper (substr($mes,0,3)).'-'.$anio.'  '.$hora, '', 0, 'L');
+		//$this->Cell(7, 0,'ETR-'.$resultado.$c2, '', 0, 'C');
+			
+		$this->Ln();
+		$variable='ENDE TRANSMISIÓN S.A. – COCHABAMBA';
 		$this->Cell(1, 0, '', '', 0, 'L');	
-		$this->Cell(180, 0, $dia.'-'.strtoupper (substr($mes,0,3)).'-'.$anio.'  '.$hora, '', 0, 'L');
+		$this->Cell(70, 0,$variable, '', 0, 'C');
+
+		//$this->Cell(180, 0, $dia.'-'.strtoupper (substr($mes,0,3)).'-'.$anio.'  '.$hora, '', 0, 'L');
+
         $this->StopTransform();  
 	}
 	function generarReporte() {
