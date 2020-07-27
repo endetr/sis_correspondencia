@@ -34,7 +34,7 @@ header("content-type: text/javascript; charset=UTF-8");
             this.addButton('Adicionar', {
                 text: 'Agregar',
                 iconCls: 'bnew',
-                disabled: true,
+                disabled: false,
                 handler: this.BAdicionar,
                 tooltip: '<b>Adicionar correspondencia</b>'
             });
