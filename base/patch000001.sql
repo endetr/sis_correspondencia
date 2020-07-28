@@ -232,7 +232,7 @@ WITH (oids = false);
 ALTER TABLE corres.tcorrespondencia
   ADD CONSTRAINT tcorrespondencia_id_alarma_key 
     UNIQUE (id_alarma) NOT DEFERRABLE;
-    
+
 CREATE SEQUENCE corres.tcorrespondencia_id_alarma_seq
   INCREMENT 1 MINVALUE 1
   MAXVALUE 2147483647 START 1
