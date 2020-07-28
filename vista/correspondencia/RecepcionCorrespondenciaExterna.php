@@ -216,7 +216,6 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 
 		this.tipo.setValue('externa');
 		this.tipo.disable(true);
-	
 		cmbDoc.store.baseParams.tipo = 'entrante';//valor por dfecto es externa
 		cmbDoc.modificado = true;
 		cmbDoc.reset();
@@ -231,9 +230,10 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 	onButtonEdit: function () {
 		this.tipo = this.getComponente('tipo');
 		var cmbDoc = this.getComponente('id_documento');
-	
-		Phx.vista.RecepcionCorrespondenciaExterna.superclass.onButtonEdit.call(this);
-				
+
+		
+
+		Phx.vista.RecepcionCorrespondenciaExterna.superclass.onButtonEdit.call(this);					
 		this.tipo.setValue('externa');
 		this.tipo.disable(true);
 		
@@ -243,6 +243,9 @@ Phx.vista.RecepcionCorrespondenciaExterna = {
 		this.ocultarComponente(this.Cmp.asociar);
 		this.ocultarComponente(this.Cmp.id_correspondencias_asociadas);
 		this.ocultarComponente(this.Cmp.asociar);
+		this.Cmp.fecha_creacion_documento.enable();
+		this.Cmp.fecha_creacion_documento.setValue(new Date());
+		this.Cmp.fecha_creacion_documento.fireEvent('change');
 	},
 	//
 	BAdicionar: function () {

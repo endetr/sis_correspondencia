@@ -224,7 +224,7 @@ header("content-type: text/javascript; charset=UTF-8");
             {
                 config : {
                     name : 'version',
-                    fieldLabel : 'Icono',
+                    fieldLabel : 'Doc. Adjunto',
                     gwidth : 60,
                     renderer : function(value, p, record) {
                         var icono = record.data.estado + '.png';
@@ -269,7 +269,7 @@ header("content-type: text/javascript; charset=UTF-8");
             }, {
                 config : {
                     name : 'adjunto',
-                    fieldLabel : 'Adjunto',
+                    fieldLabel : 'Otros Adjuntos',
                     gwidth : 60,
                     renderer : function(value, p, record) {
                         var icono = record.data.estado + '.png';
@@ -286,7 +286,7 @@ header("content-type: text/javascript; charset=UTF-8");
             },{
                 config : {
                     name : 'numero',
-                    fieldLabel : 'Numero',
+                    fieldLabel : 'Codigo',
                     gwidth : 150
                 },
                 type : 'TextField',
@@ -308,7 +308,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         if(record.data['fisico']=='si')
                             return String.format('<b><font size="5" color="#00DB03">{0}</font></b>', record.data['fisico']);
                         else
-                            return String.format('{0}', record.data['fisico']);
+                            //return String.format('{0}', record.data['fisico']);
+                            return String.format('{0}', '');
                     }
                 },
                 type : 'TextField',
@@ -415,6 +416,9 @@ header("content-type: text/javascript; charset=UTF-8");
                     gwidth : 200,
                     maxLength : 500,
                     renderer : function(value, p, record) {
+                        if (value === null || value === ''){
+                            value='';
+                        }
                         return '<span title="'+value+'">'+value+'</span>';
                     },
                 },
@@ -437,6 +441,9 @@ header("content-type: text/javascript; charset=UTF-8");
                     grow : true,
                     gwidth : 200,
                     renderer : function(value, p, record) {
+                        if (value === null || value === ''){
+                            value='';
+                        }
                         return '<span title="'+value+'">'+value+'</span>';
                     },
                 },
@@ -446,7 +453,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     type : 'string'
                 },
                 id_grupo : 2,
-                grid : true,
+                grid : false,
                 form : true
             },
             {
@@ -462,7 +469,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     type : 'numeric'
                 },
                 id_grupo : 2,
-                grid : true,
+                grid : false,
                 form : true
             },
             {
@@ -506,7 +513,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     }),
                     renderer : function(value, p, record) {
                         var prioridad = record.data.nivel_prioridad;
-                        return  record.data.nivel_prioridad;
+                       // return  record.data.nivel_prioridad;
                         if (prioridad=='1alta'){
                             return 'Alta';
                         }else if (prioridad=='2media'){
@@ -521,7 +528,7 @@ header("content-type: text/javascript; charset=UTF-8");
                     width : 280,
                 },
                 type : 'ComboBox',
-                valorInicial : '2media',
+                //valorInicial : '2media',
                 filters : {
                     pfiltro : 'cor.nivel_prioridad',
                     type : 'string'
@@ -721,8 +728,10 @@ header("content-type: text/javascript; charset=UTF-8");
                     allowBlank : true,
                     width : 280,
                     gwidth : 100,
+                    format: 'd/m/Y',
                     renderer : function(value, p, record) {
-                        return value ? value.dateFormat('d/m/Y H:i:s'):''
+                        return value ? value.dateFormat('d/m/Y') : ''   
+
                     }
                 },
                 type : 'DateField',
@@ -736,7 +745,6 @@ header("content-type: text/javascript; charset=UTF-8");
                 form : true,
                 bottom_filter : true
             },
-
             {
                 config : {
                     name : 'origen',
@@ -1308,7 +1316,6 @@ header("content-type: text/javascript; charset=UTF-8");
             type : 'date',
             dateFormat : 'Y-m-d H:i:s'
         }, 'id_acciones',
-
             'id_correspondencia_fk',
             'id_correspondencias_asociadas',
             'id_depto',
@@ -1358,7 +1365,7 @@ header("content-type: text/javascript; charset=UTF-8");
             'otros_adjuntos',
             'adjunto','origen',
             {name:'acciones', type: 'string'},
-            {name:'fecha_creacion_documento', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+            {name:'fecha_creacion_documento', type: 'date',dateFormat:'Y-m-d'},
             {name:'fecha_ult_derivado', type: 'date',dateFormat:'Y-m-d H:i:s.u'},'desc_funcionario_origen',
             {name:'observaciones_archivado', type: 'string'},
             {name:'sw_archivado', type: 'string'},
@@ -1372,7 +1379,7 @@ header("content-type: text/javascript; charset=UTF-8");
             'nombre_uo_centro',
             'fisico' //#7
         ],
-        arrayDefaultColumHidden:['estado','nivel_prioridad','estado','tipo','fecha_creacion_documento','origen','estado_reg','fecha_mod','usr_mod','id_uo'],
+        arrayDefaultColumHidden:['estado','nivel_prioridad','estado','tipo','origen','estado_reg','fecha_mod','usr_mod','id_uo'],
 
         sortInfo : {
             field : 'id_correspondencia',

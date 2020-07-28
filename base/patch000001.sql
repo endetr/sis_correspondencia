@@ -245,3 +245,10 @@ ALTER TABLE corres.tcorrespondencia
   ALTER COLUMN id_alarma SET NOT NULL;    
     
 /***********************************F-SCP-MANU-CORRES-2-9/12/2019*****************************************/
+
+
+/***********************************I-SCP-MANU-CORRES-3-28/07/2020*****************************************/
+ALTER TABLE corres.tcorrespondencia
+  ALTER COLUMN proveido TYPE VARCHAR(50) COLLATE pg_catalog."default";
+
+/***********************************F-SCP-MANU-CORRES-3-28/07/2020*****************************************/

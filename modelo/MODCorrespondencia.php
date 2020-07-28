@@ -117,7 +117,7 @@ class MODCorrespondencia extends MODbase{
 		$this->captura('direccion_institucion','text');
 		$this->captura('desc_funcionario_de_plantilla','text');
 		$this->captura('adjunto','bigint');
-		$this->captura('fecha_creacion_documento','timestamp');
+		$this->captura('fecha_creacion_documento','date');
 		$this->captura('acciones','text');
 		$this->captura('id_acciones','text');
 		$this->captura('fecha_documento_literal','text');
@@ -438,7 +438,7 @@ class MODCorrespondencia extends MODbase{
 		$this->captura('adjunto','bigint');
 		//$this->captura('acciones','text');
 		$this->captura('id_acciones','text');
-		$this->captura('fecha_creacion_documento','timestamp');
+		$this->captura('fecha_creacion_documento','date');
 		$this->captura('fecha_ult_derivado','timestamp');
 		$this->captura('observaciones_archivado','text');
 		$this->captura('cite','varchar');
@@ -980,7 +980,7 @@ class MODCorrespondencia extends MODbase{
 		$this->captura('otros_adjuntos','varchar');
 		$this->captura('adjunto','bigint');
 		$this->captura('sw_fisico','varchar');
-		$this->captura('fecha_creacion_documento','timestamp');
+		$this->captura('fecha_creacion_documento','date');
 		$this->captura('observaciones_archivado','text');
 		$this->captura('estado_corre','varchar');
 		$this->captura('desc_funcionario','text');
@@ -1024,7 +1024,7 @@ class MODCorrespondencia extends MODbase{
 		$this->setParametro('nro_paginas','nro_paginas','int4');
 		$this->setParametro('otros_adjuntos','otros_adjuntos','varchar');
 		$this->setParametro('cite','cite','varchar');
-		$this->setParametro('fecha_creacion_documento','fecha_creacion_documento','timestamp');
+		$this->setParametro('fecha_creacion_documento','fecha_creacion_documento','date');
 		$this->setParametro('persona_firma','persona_firma','varchar');
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		$this->setParametro('persona_remitente','persona_remitente','varchar');  //#4 MCGH
@@ -1159,7 +1159,7 @@ class MODCorrespondencia extends MODbase{
 
 		//Definicion de la lista del resultado del query
 		$this->captura('numero','VARCHAR');
-		$this->captura('fecha_creacion_documento','TIMESTAMP');
+		$this->captura('fecha_creacion_documento','date');
 		$this->captura('tipo','VARCHAR(20)');
 		$this->captura('desc_insti','VARCHAR(100)');
 		$this->captura('nombre_persona','TEXT');
@@ -1344,7 +1344,7 @@ class MODCorrespondencia extends MODbase{
 		$this->captura('adjunto','bigint');
 		//$this->captura('acciones','text');
 		$this->captura('id_acciones','text');
-		$this->captura('fecha_creacion_documento','timestamp');
+		$this->captura('fecha_creacion_documento','date');
 		$this->captura('fecha_ult_derivado','timestamp');
 		$this->captura('observaciones_archivado','text');
 		$this->captura('cite','varchar');
@@ -1425,7 +1425,7 @@ class MODCorrespondencia extends MODbase{
         $this->captura('adjunto','bigint');
         //$this->captura('acciones','text');
         $this->captura('id_acciones','text');
-        $this->captura('fecha_creacion_documento','timestamp');
+        $this->captura('fecha_creacion_documento','date');
         $this->captura('fecha_ult_derivado','timestamp');
         $this->captura('observaciones_archivado','text');
         $this->captura('cite','varchar');
@@ -1458,7 +1458,7 @@ class MODCorrespondencia extends MODbase{
 		$this->setParametro('id_institucion_remitente','id_institucion_remitente','int4');
 		$this->setParametro('nivel_prioridad','nivel_prioridad','varchar');
 		$this->setParametro('id_depto','id_depto','int4');
-		$this->setParametro('fecha_creacion_documento','fecha_creacion_documento','timestamp');
+		$this->setParametro('fecha_creacion_documento','fecha_creacion_documento','date');
 		$this->setParametro('tipo_documento','tipo_documento','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();

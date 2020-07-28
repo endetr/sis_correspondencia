@@ -8,3 +8,9 @@ CREATE TYPE corres.json_adjuntos_ins AS (
 );
 
 /***********************************F-TYP-FPP-CORRES-1-22/04/2016****************************************/
+/***********************************I-TYP-MANU-CORRES-1-05/03/2020****************************************/
+
+ALTER TYPE corres.json_adjuntos_ins
+  ADD ATTRIBUTE id_correspondencia INTEGER;
+
+/***********************************F-TYP-MANU-CORRES-1-05/03/2020****************************************/

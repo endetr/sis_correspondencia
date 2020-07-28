@@ -1774,9 +1774,7 @@ elsif(p_transaccion='CO_COREXT_MOD')then
 
   	elsif(p_transaccion='CO_COR_ADI')then
 
-    begin
-		
-    	--RAISE EXCEPTION '%',v_parametros;
+    begin		    
     
         SELECT g.id_gestion
         INTO v_id_gestion
@@ -1800,9 +1798,22 @@ elsif(p_transaccion='CO_COREXT_MOD')then
         JOIN segu.tsubsistema sis ON sis.codigo = 'CORRES'
         JOIN param.tdepto dep ON dep.id_depto = duo.id_depto
         WHERE duo.id_uo = ANY (v_id_uo);
-        
     	--v_num_corre =  param.f_obtener_correlativo(v_codigo_documento,NULL,v_id_uo[2],v_id_depto,p_id_usuario,'CORRES',NULL);
-        v_num_corre =  param.f_obtener_correlativo(v_codigo_documento,v_id_periodo,NULL,v_parametros.id_depto, p_id_usuario,'CORRES',NULL);
+        v_num_corre =  param.f_obtener_correlativo(
+        v_codigo_documento,
+        v_id_gestion,
+        null,
+        v_parametros.id_depto,
+        p_id_usuario,
+        'CORRES',
+        NULL,
+        NULL,
+        NULL,
+        'CBBA',0,'CBA');
+        
+        
+        --raise EXCEPTION '%',v_num_corre;
+        
 		insert into corres.tcorrespondencia(
           			estado,
                     estado_reg, 

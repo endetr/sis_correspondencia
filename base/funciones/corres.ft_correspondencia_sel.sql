@@ -331,7 +331,7 @@ BEGIN
                             coalesce (insti.direccion,'''')||'' ''||coalesce(insti.telefono1,'''')||'' ''||coalesce(insti.telefono2,'''')||'' ''||coalesce(insti.celular1,'''')||'' ''||coalesce(insti.celular2,''''),
                             initcap(person.nombre)||'' ''||initcap(person.ap_paterno)||'' ''||initcap(person.ap_materno) as desc_funcionario_de_plantilla,
                               (SELECT count(adjun.id_adjunto) FROM corres.tadjunto adjun WHERE adjun.id_correspondencia_origen=cor.id_origen and estado_reg=''activo'') as adjunto,
-                              cor.fecha_creacion_documento as fecha_creacion_documento,
+                              cor.fecha_creacion_documento::date as fecha_creacion_documento,
 
                         (CASE WHEN (cor.id_acciones is not null) then
 
@@ -948,7 +948,7 @@ BEGIN
                         cor.sw_archivado,
                         (SELECT count(adjun.id_adjunto) FROM corres.tadjunto adjun WHERE adjun.id_correspondencia_origen=cor.id_origen and estado_reg=''activo'') as adjunto,
                         array_to_string(cor.id_acciones,'','') as id_acciones,
-                        cor.fecha_creacion_documento,
+                        cor.fecha_creacion_documento::date,
                         cor.fecha_ult_derivado,
                         cor.observaciones_archivado,
                         coror.cite,
@@ -1441,7 +1441,7 @@ where tiene is not null ';
                     coror.otros_adjuntos,
                     (SELECT count(adjun.id_adjunto) FROM corres.tadjunto adjun WHERE adjun.id_correspondencia_origen=cor.id_origen and estado_reg=''activo'') as adjunto,
                     cor.sw_fisico,
-                    cor.fecha_creacion_documento,
+                    cor.fecha_creacion_documento::date,
                     cor.observaciones_archivado,
                     cor.estado_corre,
                     coalesce(emp_recepciona1.desc_funcionario1,''Recepcionista'') as desc_funcionario,
@@ -1585,7 +1585,7 @@ where tiene is not null ';
       --Sentencia de la consulta
       v_consulta:=' select
                     numero,
-                    fecha_creacion_documento,
+                    fecha_creacion_documento::date,
                     tipo,
                     insti.nombre as desc_insti,
                     persona.nombre_completo1 as nombre_persona,
