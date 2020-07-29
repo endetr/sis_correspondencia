@@ -227,7 +227,7 @@ WITH (oids = false);
 /***********************************F-SCP-MANU-CORRES-1-19/11/2019*****************************************/
 
 
-/***********************************I-SCP-MANU-CORRES-2-9/12/2019*****************************************/
+/***********************************I-SCP-MANU-CORRES-1-9/12/2019*****************************************/
 
 ALTER TABLE corres.tcorrespondencia
   ADD CONSTRAINT tcorrespondencia_id_alarma_key 
@@ -244,11 +244,12 @@ ALTER TABLE corres.tcorrespondencia
 ALTER TABLE corres.tcorrespondencia
   ALTER COLUMN id_alarma SET NOT NULL;    
     
-/***********************************F-SCP-MANU-CORRES-2-9/12/2019*****************************************/
+/***********************************F-SCP-MANU-CORRES-1-9/12/2019*****************************************/
 
 
-/***********************************I-SCP-MANU-CORRES-3-28/07/2020*****************************************/
+/***********************************I-SCP-MANU-CORRES-1-28/07/2020*****************************************/
+
 ALTER TABLE corres.tcorrespondencia
-  ALTER COLUMN proveido TYPE VARCHAR(50) COLLATE pg_catalog."default";
+  ADD COLUMN proveido VARCHAR;
 
-/***********************************F-SCP-MANU-CORRES-3-28/07/2020*****************************************/
+/***********************************F-SCP-MANU-CORRES-1-28/07/2020*****************************************/
