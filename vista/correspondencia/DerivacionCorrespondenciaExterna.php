@@ -69,11 +69,11 @@ Phx.vista.DerivacionCorrespondenciaExterna = {
         Phx.vista.DerivacionCorrespondenciaExterna.superclass.constructor.call(this,config);
 	 	//	this.bloquearOrdenamientoGrid();
          this.addButton('ImpBorrador', {
-			text: 'Vista Previa',
+			text: 'Hoja de Ruta',
 			iconCls: 'bprintcheck',
 			disabled: false,
 			handler: this.BImpBorrador,
-			tooltip: '<b>Vista Previa</b><br/> Vista Previa Correspondencia'
+			tooltip: '<b>Hoja de Ruta</b><br/> Hoja de Ruta Correspondencia'
 		});
       
         this.getBoton('Plantilla').hide();

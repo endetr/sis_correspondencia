@@ -1811,8 +1811,13 @@ elsif(p_transaccion='CO_COREXT_MOD')then
         NULL,
         'CBBA',0,'CBA');
         
-        
-        --raise EXCEPTION '%',v_num_corre;
+        v_num_corre= replace(v_num_corre,'CORRES','RES');
+  
+        v_correo=substring(v_num_corre from 1 for LENGTH(v_num_corre)-4);
+        v_estado=substring(v_num_corre from 1 for 7);
+        v_estado_aux= substring(v_correo from 8 for LENGTH(v_correo));
+		v_num_corre=concat(v_estado,'-',to_char(now()::date, 'mm-YYYY'),'/',replace(v_estado_aux,'-',''));
+
         
 		insert into corres.tcorrespondencia(
           			estado,
