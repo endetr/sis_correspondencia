@@ -405,7 +405,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 direction: 'ASC'
             },
             bdel:true,
-            //bsave : false,
+            bsave:true,
             bnew:true,
 
             iniciarEventos:function(){
