@@ -290,6 +290,7 @@ Phx.vista.Adjunto=Ext.extend(Phx.gridInterfaz,{
 	],
 		fileUpload:true,
 	tam_pag:50,	
+	bedit:false,
 	title:'Adjunto',
 	ActSave:'../../sis_correspondencia/control/Adjunto/insertarAdjunto',
 	ActDel:'../../sis_correspondencia/control/Adjunto/eliminarAdjunto',
@@ -338,22 +339,18 @@ Phx.vista.Adjunto=Ext.extend(Phx.gridInterfaz,{
 
 		},
        onButtonNew: function () {
-       	    // alert (this.estado_corre);
-       	    
-       	     if (this.estado_corre=='borrador_corre'){
-       	        	Phx.vista.Correspondencia.superclass.onButtonNew.call(this);
-       	        	
-	          	
-       	     }else{
-       	     	
-	       	     if ( this.estado=='enviado'){
-	             	alert ('No se puede añadir nuevos archivos ');
-	             }else{
-	             	Phx.vista.Correspondencia.superclass.onButtonNew.call(this);
-	             }
-	          }
-             
-             
+       	    //alert (this.estado_corre);       	   
+			if (this.estado_corre=='borrador_corre'){
+			Phx.vista.Correspondencia.superclass.onButtonNew.call(this);       	        	
+			console.log('1');
+			}else{       	     	
+				if ( this.estado=='enviado'){
+					alert ('No se puede añadir nuevos archivos ');
+				}else{
+					console.log('2');
+					Phx.vista.Correspondencia.superclass.onButtonNew.call(this);
+				}
+			}			  				
         },
         onButtonEdit: function () {
         	 if (this.estado_corre=='borrador_corre'){
@@ -454,10 +451,23 @@ Phx.vista.Adjunto=Ext.extend(Phx.gridInterfaz,{
         });
 
     },
-
+	//
+	successSave:function(resp){
+		this.store.rejectChanges();
+		Phx.CP.loadingHide();
+		if(resp.argument && resp.argument.news){
+			if(resp.argument.def == 'reset'){			 
+			  this.onButtonNew();
+			}			
+		}
+		else{
+			this.window.hide();
+		}
+		Phx.CP.getPagina(this.idContenedorPadre).reload();		
+		this.reload();
+	},
 		
-	}
-)
+})
 </script>
 		
 		

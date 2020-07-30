@@ -58,7 +58,7 @@ Phx.vista.subirCorrespondencia=Ext.extend(Phx.frmInterfaz,{
 	    },
         {
             config : {
-                fieldLabel : 'Número',
+                fieldLabel : 'Codigo',
                 readOnly : true,
                 name:'numeroCorres',
                 width: 230,

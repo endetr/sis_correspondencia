@@ -169,6 +169,7 @@ Phx.vista.adicionarCorrespondencia = Ext.extend(Phx.frmInterfaz,{
 	},
 	
 	successGen: function(resp){
+        alert('Se ha recepcionado correctamente pero que debe completar la informacion para derivar');
 		Phx.CP.loadingHide();
 		Phx.CP.getPagina(this.idContenedorPadre).reload();
 		this.panel.destroy();

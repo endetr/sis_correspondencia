@@ -246,10 +246,17 @@ ALTER TABLE corres.tcorrespondencia
     
 /***********************************F-SCP-MANU-CORRES-1-9/12/2019*****************************************/
 
-
 /***********************************I-SCP-MANU-CORRES-1-28/07/2020*****************************************/
 
 ALTER TABLE corres.tcorrespondencia
   ADD COLUMN proveido VARCHAR;
 
 /***********************************F-SCP-MANU-CORRES-1-28/07/2020*****************************************/
+
+/***********************************I-SCP-MANU-CORRES-1-29/07/2020*****************************************/
+ALTER TABLE corres.tcorrespondencia
+  ADD COLUMN sw_finalizado VARCHAR(10);
+
+ALTER TABLE corres.tcorrespondencia
+  ALTER COLUMN sw_finalizado SET DEFAULT 'no';
+/***********************************F-SCP-MANU-CORRES-1-29/07/2020*****************************************/

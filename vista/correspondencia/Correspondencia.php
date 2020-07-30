@@ -1526,7 +1526,7 @@ header("content-type: text/javascript; charset=UTF-8");
             Phx.CP.loadWindows('../../../sis_correspondencia/vista/adjunto/Adjunto.php?estado='+rec.data.estado, 'Adjuntos', {
                 width : 900,
                 height : 400
-            }, rec.data, this.idContenedor, 'Adjunto')
+            }, rec.data, this.idContenedor, 'Adjunto');            
         },
         //5
         BCorregir : function() {
@@ -1591,7 +1591,7 @@ header("content-type: text/javascript; charset=UTF-8");
             var rec = this.sm.getSelected();
             var id_correspondencia = this.sm.getSelected().data.id_correspondencia;
             if (confirm('¿Esta seguro de DERIVAR el documento '+rec.data.numero + '?, no podrá modificar información al respecto.')){
-                Phx.CP.loadWindows('../../../sis_correspondencia/vista/correspondencia/Proveido.php', 'Proveido', {
+                Phx.CP.loadWindows('../../../sis_correspondencia/vista/correspondencia/Proveido.php', '-', {
                     width : 400,
 				    height : 150
                 }, 

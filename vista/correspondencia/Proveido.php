@@ -48,7 +48,7 @@ Phx.vista.Proveido = Ext.extend(Phx.frmInterfaz,{
 		{
             config : {
                 name : 'proveido',
-                fieldLabel : 'Proceso a seguir',
+                fieldLabel : 'Comentario',
                 allowBlank : true,   
                 width:200                
             },
@@ -57,7 +57,7 @@ Phx.vista.Proveido = Ext.extend(Phx.frmInterfaz,{
         },
 	],
 	labelSubmit: '<i class="fa fa-check"></i> Guardar',
-	title: 'Proceso a seguir',
+	title: 'Comentario',
 	// Funcion guardar del formulario
 	onSubmit: function(o) {
 		var me = this;
