@@ -55,6 +55,7 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 		this.Atributos[this.getIndAtributo('archivado_imagen')].grid=true;	
         //this.setColumnHeader('id_institucion_remitente','Espectro');
 	    Phx.vista.CorrespondenciaRecibidaArchivada.superclass.constructor.call(this,config);	    
+		this.getBoton('Adicionar').hide();
         this.getBoton('Plantilla').hide();
         this.getBoton('SubirDocumento').hide();
         this.getBoton('Corregir').hide();
@@ -87,6 +88,7 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 	
    	actualizarSegunTab: function (name, indice) {
 		
+		this.getBoton('Adicionar').hide();
 	    this.getBoton('Plantilla').hide();
 	    this.getBoton('FinalizarExterna').hide();
 	    this.getBoton('SubirDocumento').hide();
@@ -135,17 +137,12 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 		  var data = this.getSelectedData();
 
 		console.log('data',data)
-		  var tb =this.tbar;
-		  //si el archivo esta escaneado se permite visualizar
-
-
-	 
-		 return tb
-		
+		var tb =this.tbar;
+		//si el archivo esta escaneado se permite visualizar
+		return tb
 	},
 	finalizarRecepcion:function(){
 		var rec = this.sm.getSelected();
-
 		Ext.Ajax.request({
 			url: '../../sis_correspondencia/control/Correspondencia/finalizarRecepcion',
 			params: {
@@ -156,14 +153,9 @@ Phx.vista.CorrespondenciaRecibidaArchivada = {
 			timeout: this.timeout,
 			scope: this
 		});
-
-
 	},
 	successFinalizar:function(resp){
-
 		this.load({params: {start: 0, limit: 50}});
-
-
 		console.log(resp)
 	},
 	DesArchivar:function(){

@@ -578,6 +578,7 @@ header("content-type: text/javascript; charset=UTF-8");
                 //a this.Cmp.id_funcionario.disable();
                 //this.Cmp.id_funcionario.enableMultiSelect(true);
                 Phx.vista.CorrespondenciaDetalle.superclass.onButtonEdit.call(this);
+                console.log(this.Cmp);
                 this.ocultarComponente(this.Cmp.tipo_filtro);
                 this.ocultarComponente(this.Cmp.id_gerencia);
                 this.ocultarComponente(this.Cmp.id_funcionario);
