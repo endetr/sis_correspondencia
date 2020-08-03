@@ -54,7 +54,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         name: 'id_correspondencia'
                     },
                     type:'Field',
-                    form:true
+                    form:true,
+                    grid:false
                 },
                 {
                     //configuracion del componente
@@ -64,7 +65,8 @@ header("content-type: text/javascript; charset=UTF-8");
                         name: 'id_correspondencia_fk'
                     },
                     type:'Field',
-                    form:true
+                    form:true,
+                    grid:false
                 },
                 //#8
                 {
@@ -703,13 +705,18 @@ header("content-type: text/javascript; charset=UTF-8");
             },
             //
             onButtonSave: function() {
+                var rec = this.sm.getSelected();
+                var id_correspondencia = this.sm.getSelected().data.id_correspondencia;
+                var fisico = this.sm.getSelected().data.fisico;
+                var id_correspondencia_fk = this.sm.getSelected().data.id_correspondencia_fk;
+                var id_origen = this.sm.getSelected().data.id_origen;
                 Ext.Ajax.request({
                     url : '../../sis_correspondencia/control/Correspondencia/modificarCorrespondenciaDetalles',
                     params : {
-                        id_correspondencia : this.maestro.id_correspondencia,
-                        id_correspondencia_fk: this.maestro.id_correspondencia_fk,
-                        fisico : this.maestro.fisico,
-                        id_origen : this.maestro.id_origen,
+                        id_correspondencia : id_correspondencia,
+                        id_correspondencia_fk: id_correspondencia_fk,
+                        fisico : fisico,
+                        id_origen : id_origen,
                     },
                     success : this.successDerivar,
                     failure : this.conexionFailure,

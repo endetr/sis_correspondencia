@@ -27,6 +27,7 @@ $body$
  #6      		02/09/2019   MCGH         Correcciones a observaciones de forma
  #7      		06/09/2019   MCGH         Adición del campo Tiene el Fisico
  #9          14/11/2019   Manuel Guerra      modificar campo a multiple
+ #64         03/08/2020   Manuel Guerra      modificar el campo fisico desde grilla
 ****************************************************************************/
 
 
@@ -1899,13 +1900,14 @@ elsif(p_transaccion='CO_COREXT_MOD')then
     elsif(p_transaccion='CO_CORDETS_MOD')then
 
     begin
+    	--#64
     	SELECT COUNT(*) 
         INTO v_count
         FROM corres.tcorrespondencia c
-        WHERE c.id_correspondencia = v_parametros.id_correspondencia_fk::INTEGER
+        WHERE c.id_correspondencia_fk = v_parametros.id_correspondencia_fk::INTEGER
         and c.sw_fisico = 'si'
         and c.estado <> 'anulado';
-            
+		  
 		IF (v_parametros.fisico = 'si' AND v_count > 0 )THEN
         	raise exception 'Ya existe un funcionario que tiene el fisico';
         ELSE
