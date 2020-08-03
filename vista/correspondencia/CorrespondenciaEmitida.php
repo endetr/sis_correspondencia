@@ -13,6 +13,8 @@
 #4      		25/07/2019   MCGH         Adición del campo persona_remitente, fecha recepción,
 #										  Eliminación del campo id_clasificador,
 #										  Adición del campo persona_destino
+#64				03/08/2020		manuel guerra  inhabilitar botones segun estado,
+
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -44,13 +46,14 @@ header("content-type: text/javascript; charset=UTF-8");
 			//this.Atributos[this.getIndAtributo('tipo_documento')].grid=false;  
 			        
 			Phx.vista.CorrespondenciaEmitida.superclass.constructor.call(this, config);   
-			
+			this.getBoton('Adicionar').hide();
 			this.getBoton('FinalizarExterna').hide();
 			this.getBoton('ImpCodigo').hide();
 			this.getBoton('ImpCodigoDoc').hide();
 			this.getBoton('HojaRuta').hide();
 			this.getBoton('Finalizar').hide();
 			this.getBoton('Habilitar').hide();
+            this.getBoton('Archivar').hide();
 			this.init();
 			this.argumentExtraSubmit={'vista':'CorrespondenciaInterna'};
 			this.store.baseParams = {'interface': 'interna'};
@@ -58,7 +61,7 @@ header("content-type: text/javascript; charset=UTF-8");
         },
       
       	onButtonNew: function () {            
-        	Phx.vista.Correspondencia.superclass.onButtonNew.call(this);
+        	Phx.vista.Correspondencia.superclass.onButtonNew.call(this);            
             this.cmpFechaDoc = this.getComponente('fecha_documento');
             this.Cmp.id_funcionario.store.baseParams.fecha = new Date().dateFormat(this.cmpFechaDoc.format);
             this.Cmp.id_funcionario.store.load({params:{start:0,limit:this.tam_pag},
@@ -149,58 +152,46 @@ header("content-type: text/javascript; charset=UTF-8");
             if (data['estado'] == 'enviado') {
 				if (tb) {
                 //this.getBoton('Plantilla').disable();
-this.getBoton('Adjuntos').enable();
-this.getBoton('SubirDocumento').enable();
-this.getBoton('Corregir').enable();
-this.getBoton('Derivar').disable();
-this.getBoton('Historico').enable();
- this.getBoton('Archivar').enable();
-this.getBoton('edit').disable();
-this.getBoton('del').disable();
-                    
+                this.getBoton('Adjuntos').enable();
+                this.getBoton('SubirDocumento').disable();
+                this.getBoton('Corregir').enable();
+                this.getBoton('Derivar').disable();
+                this.getBoton('Historico').enable();
+                this.getBoton('Archivar').enable();
+                this.getBoton('edit').disable();
+                this.getBoton('del').disable();                    
                 }
-
             }
-
-
             return tb
-
         },
         
-        enableDisable:function(val){
-        	
-      if(val =='interna'){
+    enableDisable:function(val){        	
+        if(val =='interna'){
             this.cmpResponde.store.baseParams.tipo = val;
             this.cmpResponde.modificado = true;
             this.cmpResponde.enable();
             this.cmpResponde.reset()
-         }
+        }
         else if (val =='externa'){
             this.cmpResponde.store.baseParams.tipo = val;
             this.cmpResponde.modificado = true;
             this.cmpResponde.enable();
             this.cmpResponde.reset();
-            
-         }
-         else {
-         	   this.cmpResponde.disable(); 
-         	    this.cmpResponde.reset();     	
-         }
-         
-     },
-		  iniciarEventos: function () {
-
-		  	this.getBoton('Habilitar').hide();
-	         this.cmpResponde = this.getComponente('id_correspondencias_asociadas');
-             this.cmpAsocia = this.getComponente('asociar');
- 
-            this.cmpAsocia.on('change', function (groupRadio,radio) {
-            	if(radio.inputValue){this.enableDisable(radio.inputValue);}
-            },this);
-            
-
         }
-        
+        else {
+            this.cmpResponde.disable(); 
+            this.cmpResponde.reset();     	
+        }        
+    },
 
-    };
+    iniciarEventos: function () {
+        this.getBoton('Habilitar').hide();
+        this.cmpResponde = this.getComponente('id_correspondencias_asociadas');
+        this.cmpAsocia = this.getComponente('asociar');
+        this.cmpAsocia.on('change', function (groupRadio,radio) {
+            if(radio.inputValue){this.enableDisable(radio.inputValue);}
+        },this);            
+    }
+        
+};
 </script>

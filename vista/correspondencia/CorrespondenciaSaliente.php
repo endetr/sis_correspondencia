@@ -136,6 +136,7 @@ header("content-type: text/javascript; charset=UTF-8");
 
             this.fecha_documento = this.getComponente('fecha_documento');
             //this.fecha_documento.disable(true);
+            
 
             this.tipo = this.getComponente('tipo');
             this.tipo.setValue('saliente');

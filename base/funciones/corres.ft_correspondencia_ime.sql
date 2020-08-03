@@ -283,33 +283,34 @@ BEGIN
 
       --si la correspondencia es del tipo interna analiza combo de empleado
       if( v_parametros.tipo='interna') THEN
-
         --analiza el combo de funcionarios destinos para hacer la insercion de hijos
         --analiza que no tenga otros derivaciones duplicadas
 
           v_resp_cm=corres.f_proc_mul_cmb_empleado(
-          v_parametros.id_funcionarios,
-          v_id_correspondencia,
-          v_parametros.mensaje::varchar,
-          p_id_usuario,
-          v_parametros.id_documento,
-          v_num_corre,
-          v_parametros.tipo,
-          v_parametros.referencia,
-          v_parametros.id_acciones,
-          v_id_periodo,
-          v_id_gestion,
-          1,
-          NULL, --#4 v_parametros.id_clasificador,
-          NULL,-- v_parametros.cite,
-          v_parametros.nivel_prioridad,
-          v_origen,
-          v_fecha_documento,
-          v_id_origen,
-          v_id_depto,
-          null,  --#4 persona_remitente
-          null  --#7
-        );
+                    v_parametros.id_funcionarios,
+                    v_id_correspondencia,
+                    v_parametros.mensaje::varchar,
+                    p_id_usuario,
+                    v_parametros.id_documento,
+                    v_num_corre,
+                    v_parametros.tipo,
+                    v_parametros.referencia,
+                    v_parametros.id_acciones,
+                    v_id_periodo,
+                    v_id_gestion,
+                    1,
+                    null,--#13  --#4 v_parametros.id_clasificador,
+                    NULL, 
+                    v_parametros.nivel_prioridad,--#15
+                    v_origen,
+                    v_fecha_documento,
+                    v_id_origen,
+                    v_id_depto,--#19
+                    null,--v_parametros.persona_remitente,  --#20 persona_remitente
+                    'si',  --#7
+                    NULL,
+                    NULL
+        		);
         ELSE
         --si es del tipo saliente detalle para persona o institucion
         -- verifica que tenga o una persona o una institucion
